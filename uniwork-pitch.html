@@ -37,8 +37,8 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-d);overfl
 .b{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
 .slide.on .b{opacity:1;transform:none;transition-delay:var(--d,0s)}
 .grid-bg{background-image:linear-gradient(rgba(94,234,212,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(94,234,212,.045) 1px,transparent 1px);background-size:44px 44px}
-.ttl{font-weight:900;text-transform:uppercase;letter-spacing:-.02em;margin:0;line-height:1.04;text-wrap:balance}
-.ttl .ink{background:linear-gradient(90deg,#7FF5E3,#5EEAD4 40%,#67E8F9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ttl{font-weight:900;text-transform:uppercase;letter-spacing:-.02em;margin:0;line-height:1.22;text-wrap:balance}
+.ttl .ink{background:linear-gradient(90deg,#7FF5E3,#5EEAD4 40%,#67E8F9);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding:.2em 0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 p,.cd span,.why span,.prin span,.ev b,.pi span,.card p{text-wrap:pretty}
 .eyebrow{font-family:var(--f-m);font-size:13.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:12px}
 .eyebrow.dot::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px var(--teal)}
@@ -52,7 +52,7 @@ p,.cd span,.why span,.prin span,.ev b,.pi span,.card p{text-wrap:pretty}
 .hero .grid-bg{position:absolute;inset:0;mask-image:linear-gradient(90deg,transparent,#000 35%,#000)}
 .hero .copy{position:absolute;left:80px;top:96px;width:640px}
 .hero .brandline{font-size:20px;font-weight:800;letter-spacing:.06em;color:var(--teal)}
-.hero h1{font-size:84px;margin-top:42px;background:linear-gradient(90deg,#7FF5E3,#5EEAD4 40%,#67E8F9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1{font-size:84px;margin-top:26px;line-height:1.32}
 .hero .lead{margin-top:36px;font-size:19px;font-weight:600;color:#A9BEC6;letter-spacing:.01em}
 .hero .lead b{color:#E6F4F6}
 .nums{display:flex;gap:14px;margin-top:40px}
@@ -65,12 +65,6 @@ p,.cd span,.why span,.prin span,.ev b,.pi span,.card p{text-wrap:pretty}
 .tags span{font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid rgba(148,163,184,.28);color:#B9CBD3;letter-spacing:.02em}
 .tags span.hl{border-color:var(--teal);color:var(--teal);background:rgba(94,234,212,.08)}
 .iso{position:absolute;left:800px;top:70px;width:720px;height:660px;overflow:visible}
-.badge{position:absolute;display:flex;align-items:center;gap:10px;padding:8px 16px 8px 9px;border-radius:999px;background:rgba(6,17,25,.82);border:1px solid rgba(148,163,184,.35);font-size:14.5px;font-weight:700;white-space:nowrap;box-shadow:0 10px 30px -10px rgba(0,0,0,.8)}
-.badge i{font-style:normal;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--teal);color:#062026;font-size:12.5px;font-weight:900}
-.badge .fl{display:flex;align-items:center;gap:10px}
-.slide.on .badge{animation:bob 5s ease-in-out infinite;animation-delay:var(--fd,0s)}
-@keyframes bob{50%{translate:0 -8px}}
-.bin{position:absolute;font-family:var(--f-m);font-size:10.5px;line-height:1.3;color:rgba(94,234,212,.4)}
 
 /* svg iso animation */
 .flt{animation:flt 6s ease-in-out infinite}
@@ -331,7 +325,7 @@ body.fs:not(.awake){cursor:none}
 @media (orientation:portrait) and (max-width:700px){.rotate{display:block;position:fixed;left:50%;bottom:76px;transform:translateX(-50%);font-size:12.5px;color:var(--mu);background:#0A1820;border:1px solid var(--line2);padding:6px 12px;border-radius:999px;z-index:31;white-space:nowrap}}
 @media (prefers-reduced-motion: reduce){
   .slide,.slide.on,.b,.slide.on .b,.topline{transition:none!important}
-  .flt,.flow,.orbit,.pulse,.twk,.slide.on .badge,.slide.on .lrow::after,.slide.on .prin div::after,.wfm,.net circle,.net line,.live,.runner.run,.pipe .dot.go{animation:none!important}
+  .flt,.flow,.orbit,.pulse,.twk,.slide.on .lrow::after,.slide.on .prin div::after,.wfm,.net circle,.net line,.live,.runner.run,.pipe .dot.go{animation:none!important}
   .e,.el,.gn,.st,.ev,.pi,.ring,.q,.narr .tx{transition:none!important}
 }
 </style>
@@ -366,17 +360,13 @@ body.fs:not(.awake){cursor:none}
     <div class="hero">
       <div class="grid-bg"></div>
       <div class="copy">
-        <div class="brandline b">UNIWORK</div>
-        <h1 class="ttl b">Kiến trúc<br>tổng quan</h1>
-        <p class="lead b">Work OS thế hệ AI, nơi <b>con người và agent cùng làm chủ công việc</b>: nhiệm vụ, cuộc họp, tài liệu và trao đổi trên một nền tảng thống nhất.</p>
+        <div class="brandline b">WORK OS THẾ HỆ AI</div>
+        <h1 class="ttl b"><span class="ink">Kiến trúc<br>tổng quan</span></h1>
+        <p class="lead b">Nơi <b>con người và agent cùng làm chủ công việc</b>: nhiệm vụ, cuộc họp, tài liệu và trao đổi trên một nền tảng thống nhất.</p>
         <div class="nums b"><button type="button" data-go="3"><b>01</b><span>Kiến trúc 5 tầng</span></button><button type="button" data-go="5"><b>02</b><span>Work Graph</span></button><button type="button" data-go="9"><b>03</b><span>Agent có ngữ cảnh</span></button></div>
         <div class="tags b"><span>UniWork Web</span><span>UniChat</span><span>uniOffice</span><span>Work Graph</span><span class="hl">Ask UNI</span></div>
       </div>
-      <svg class="iso b" id="iso" viewBox="0 0 720 660" aria-label="Minh họa isometric: lõi AI ở trên, mô-đun nghiệp vụ bên trái, hạ tầng cloud bên phải, khối dữ liệu ở giữa nền tảng." role="img"></svg>
-      <div class="badge b" style="left:800px;top:150px;--fd:0s"><i>A</i>Agent AI</div>
-      <div class="badge b" style="left:1340px;top:214px;--fd:-1.2s"><i>W</i>Work OS</div>
-      <div class="badge b" style="left:1340px;top:652px;--fd:-2.4s"><i>D</i>Dữ liệu &amp; hạ tầng</div>
-      <div class="badge b" style="left:790px;top:640px;--fd:-3.6s"><i>P</i>Nền tảng dùng chung</div>
+      <svg class="iso b" id="iso" viewBox="0 0 720 660" role="img" aria-label="Mô hình 5 tầng kiến trúc UniWork xếp chồng: Kênh sử dụng, Mô-đun nghiệp vụ, AI và Agent, Nền tảng dùng chung, Dữ liệu và hạ tầng. Yêu cầu đi xuống qua các tầng, cập nhật thời gian thực đi ngược lên."></svg>
     </div>
   </section>
 
@@ -624,55 +614,61 @@ function cube(g,x,y,a,h,c,dots){
 function lerp(p,q,u){return[p[0]+(q[0]-p[0])*u,p[1]+(q[1]-p[1])*u];}
 function label(g,x,y,txt){var bg=el('rect',{fill:'#0A2029',stroke:'rgba(94,234,212,.35)','stroke-width':'1',rx:'7'},g);var t=el('text',{x:x,y:y,'text-anchor':'middle',fill:'#DDEBEF','font-family':'JetBrains Mono, monospace','font-size':'14','font-weight':'600','letter-spacing':'1.5'},g);t.textContent=txt;var bb=t.getBBox();bg.setAttribute('x',bb.x-10);bg.setAttribute('y',bb.y-5);bg.setAttribute('width',bb.width+20);bg.setAttribute('height',bb.height+10);}
 
-/* cover isometric scene */
+/* cover: the five layers of slide 3, stacked; a request goes down, realtime updates come back up */
 (function(){
   var s=document.getElementById('iso');
+  function hex(c){return [parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)];}
+  function shade(c,k){var v=hex(c);return 'rgb('+v.map(function(x){return Math.round(x*k);}).join(',')+')';}
   var defs=el('defs',{},s);
-  var rg=el('radialGradient',{id:'pglow'},defs);el('stop',{offset:'0','stop-color':'#2DD4BF','stop-opacity':'.35'},rg);el('stop',{offset:'1','stop-color':'#2DD4BF','stop-opacity':'0'},rg);
-  var T=[360,360],R=[620,490],B=[360,620],L=[100,490];
-  el('ellipse',{cx:360,cy:490,rx:300,ry:150,fill:'url(#pglow)'},s);
-  el('polygon',{points:pts([T,R,B,L]),fill:'rgba(45,212,191,.07)',stroke:'rgba(94,234,212,.6)','stroke-width':'1.4'},s);
-  [.2,.4,.6,.8].forEach(function(u){var a=lerp(L,T,u),b=lerp(B,R,u),c=lerp(T,R,u),d=lerp(L,B,u);
-    el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'rgba(94,234,212,.22)','stroke-width':'1'},s);
-    el('line',{x1:c[0],y1:c[1],x2:d[0],y2:d[1],stroke:'rgba(94,234,212,.22)','stroke-width':'1'},s);});
-  // connectors from the core
-  var C=[360,262];
-  [[[205,318],'#5EEAD4'],[[515,356],'#A78BFA'],[[360,398],'#67E8F9']].forEach(function(t,i){
-    var d='M'+C[0]+' '+C[1]+' L'+t[0][0]+' '+t[0][1];
-    el('path',{d:d,stroke:t[1],'stroke-width':'1.6',fill:'none',class:'flow',opacity:'.85'},s);
-    var dot=el('circle',{r:'3.5',fill:t[1]},s);el('animateMotion',{dur:(1.8+i*.4)+'s',repeatCount:'indefinite',path:d},dot);
-  });
-  // left stack: business modules
-  var gl=el('g',{class:'flt'},s);el('ellipse',{cx:200,cy:470,rx:70,ry:22,fill:'rgba(0,0,0,.35)'},gl);
-  cube(gl,200,420,60,22,PAL.green,true);cube(gl,200,380,60,22,PAL.cyan,true);cube(gl,200,340,60,22,PAL.violet,true);
-  label(s,196,518,'MÔ-ĐUN NGHIỆP VỤ');
-  // right cube: cloud infra
-  var gr=el('g',{class:'flt d2'},s);el('ellipse',{cx:530,cy:470,rx:62,ry:20,fill:'rgba(0,0,0,.35)'},gr);
-  cube(gr,530,404,54,40,PAL.violet,false);
-  el('path',{d:'M520 408 L530 398 L540 408',stroke:'#2A1A66','stroke-width':'2.5',fill:'none','stroke-linecap':'round'},gr);
-  [[512,346,13],[530,340,17],[548,346,13]].forEach(function(c){el('circle',{cx:c[0],cy:c[1],r:c[2],fill:'#7FF0E0'},gr);});
-  el('rect',{x:499,y:346,width:62,height:12,rx:6,fill:'#5FDCCB'},gr);
-  label(s,548,518,'HẠ TẦNG CLOUD');
-  // centre: data cylinder
-  var gd=el('g',{class:'flt d1'},s);
-  el('ellipse',{cx:360,cy:478,rx:58,ry:18,fill:'rgba(0,0,0,.35)'},gd);
-  [['#16B98A','#86F0C4',446],['#2CC7B4','#9AF5EA',424],['#8E6CF0','#CDBEFF',402]].forEach(function(c){var y=c[2];
-    el('rect',{x:314,y:y,width:92,height:20,fill:c[0]},gd);el('ellipse',{cx:360,cy:y+20,rx:46,ry:14,fill:c[0]},gd);el('ellipse',{cx:360,cy:y,rx:46,ry:14,fill:c[1]},gd);
-    el('circle',{cx:396,cy:y+12,r:2.2,fill:'#fff',opacity:'.8'},gd);});
-  label(s,360,590,'DỮ LIỆU');
-  // top core
-  var gc=el('g',{class:'flt d3'},s);
-  el('ellipse',{cx:360,cy:182,rx:82,ry:28,fill:'none',stroke:'rgba(94,234,212,.7)','stroke-width':'1.4',class:'orbit'},gc);
-  cube(gc,360,182,50,58,PAL.teal,false);
-  el('circle',{cx:360,cy:182,r:7,fill:'none',stroke:'#063A36','stroke-width':'3'},gc);
-  el('circle',{cx:360,cy:182,r:16,fill:'none',stroke:'#5EEAD4','stroke-width':'1.2',class:'pulse'},gc);
-  label(s,360,118,'AI & AGENT');
-  // particles
-  [[90,250,2.5,0],[640,300,2,-1],[560,210,1.8,-2],[150,600,2,-.5],[620,610,2.4,-1.5]].forEach(function(p){el('circle',{cx:p[0],cy:p[1],r:p[2],fill:'#67E8F9',class:'twk',style:'animation-delay:'+p[3]+'s'},s);});
+  var rg=el('radialGradient',{id:'pglow'},defs);el('stop',{offset:'0','stop-color':'#2DD4BF','stop-opacity':'.28'},rg);el('stop',{offset:'1','stop-color':'#2DD4BF','stop-opacity':'0'},rg);
+  var CX=268,A=180,B=66,H=16,GAP=100,TOP=96;
+  var L=[['01','Kênh sử dụng','#60A5FA'],['02','Mô-đun nghiệp vụ','#A78BFA'],['03','AI & Agent','#E8B86B'],['04','Nền tảng dùng chung','#67E8F9'],['05','Dữ liệu & hạ tầng','#5EEAD4']];
+  el('ellipse',{cx:CX,cy:TOP+4*GAP+70,rx:300,ry:120,fill:'url(#pglow)'},s);
+  function on(g,x,y,a,h,c){cube(g,x,y-h,a,h,[shade(c,1.15).replace('rgb','rgb'),shade(c,.75),shade(c,.5)],false);}
+  function items(i,g,cy,c){
+    var spots=[[-112,16],[-52,38],[52,38],[112,16]];
+    if(i===0){spots.forEach(function(p){var x=CX+p[0],y=cy+p[1];el('polygon',{points:pts([[x-12,y-6],[x+12,y-18],[x+12,y-2],[x-12,y+10]]),fill:shade(c,.9),stroke:'#DCEBFF','stroke-opacity':'.6','stroke-width':'1'},g);});}
+    else if(i===1){spots.forEach(function(p,k){on(g,CX+p[0],cy+p[1],14,10+(k%2)*8,['#4ADE80','#A78BFA','#60A5FA','#E8B86B'][k]);});}
+    else if(i===2){on(g,CX-112,cy+16,13,10,c);on(g,CX+112,cy+16,13,10,c);
+      var x=CX,y=cy+34;on(g,x,y,17,20,c);el('ellipse',{cx:x,cy:y-30,rx:32,ry:11,fill:'none',stroke:c,'stroke-width':'1.3',class:'orbit'},g);}
+    else if(i===3){var N=[[CX-120,cy+14],[CX-62,cy+36],[CX-8,cy+20],[CX+52,cy+40],[CX+116,cy+16]];
+      [[0,1],[1,2],[2,3],[3,4],[1,3]].forEach(function(e){el('line',{x1:N[e[0]][0],y1:N[e[0]][1],x2:N[e[1]][0],y2:N[e[1]][1],stroke:c,'stroke-width':'1.4','stroke-opacity':'.8'},g);});
+      N.forEach(function(n,k){el('circle',{cx:n[0],cy:n[1],r:k===2?6:4.5,fill:c,class:k===2?'pulse':''},g);});}
+    else{var x=CX-30,y=cy+12;
+      el('rect',{x:x-26,y:y,width:52,height:22,fill:shade(c,.6)},g);el('ellipse',{cx:x,cy:y+22,rx:26,ry:9,fill:shade(c,.6)},g);el('ellipse',{cx:x,cy:y,rx:26,ry:9,fill:shade(c,1.1)},g);
+      on(g,CX+60,cy+38,14,12,c);on(g,CX+112,cy+16,14,16,c);on(g,CX-112,cy+16,14,10,c);}
+  }
+  for(var i=4;i>=0;i--){
+    var cy=TOP+i*GAP,c=L[i][2],g=el('g',{class:'slab'},s);
+    var T=[CX,cy-B],R=[CX+A,cy],F=[CX,cy+B],Lf=[CX-A,cy];
+    el('polygon',{points:pts([Lf,F,[F[0],F[1]+H],[Lf[0],Lf[1]+H]]),fill:shade(c,.42)},g);
+    el('polygon',{points:pts([R,F,[F[0],F[1]+H],[R[0],R[1]+H]]),fill:shade(c,.28)},g);
+    el('polygon',{points:pts([T,R,F,Lf]),fill:'#0B1F28',stroke:c,'stroke-width':'1.5'},g);
+    el('polygon',{points:pts([T,R,F,Lf]),fill:c,'fill-opacity':'.12'},g);
+    [.25,.5,.75].forEach(function(u){var p1=lerp(Lf,T,u),p2=lerp(F,R,u),q1=lerp(T,R,u),q2=lerp(Lf,F,u);
+      el('line',{x1:p1[0],y1:p1[1],x2:p2[0],y2:p2[1],stroke:c,'stroke-opacity':'.16'},g);el('line',{x1:q1[0],y1:q1[1],x2:q2[0],y2:q2[1],stroke:c,'stroke-opacity':'.16'},g);});
+    items(i,g,cy,c);
+    /* callout: the layer's number and name, as on slide 3 */
+    var lx=CX+A+46;el('line',{x1:R[0]+4,y1:cy,x2:lx-6,y2:cy,stroke:c,'stroke-opacity':'.7','stroke-width':'1.2','stroke-dasharray':'3 4'},g);
+    el('circle',{cx:R[0]+4,cy:cy,r:3,fill:c},g);
+    var box=el('rect',{x:lx,y:cy-17,height:34,rx:9,fill:'#0A1C25',stroke:c,'stroke-opacity':'.55'},g);
+    var tn=el('text',{x:lx+12,y:cy+5,fill:c,'font-family':'JetBrains Mono, monospace','font-size':'14','font-weight':'600'},g);tn.textContent=L[i][0];
+    var tt=el('text',{x:lx+40,y:cy+5,fill:'#EAF4F7','font-family':'Be Vietnam Pro, system-ui, sans-serif','font-size':'15.5','font-weight':'700'},g);tt.textContent=L[i][1];
+    box.dataset.fit='1';box.setAttribute('width',190);
+  }
+  /* one flow through every layer: request down (teal), realtime update up (violet) */
+  var x0=CX,y0=TOP+B+H,y1=TOP+4*GAP+B;
+  var spine='M'+x0+' '+(y0-8)+' L'+x0+' '+y1;
+  el('path',{d:spine,stroke:'#EAF4F7','stroke-opacity':'.35','stroke-width':'1.4','stroke-dasharray':'3 5',fill:'none'},s);
+  var d1=el('circle',{r:'5',fill:'#5EEAD4'},s);el('animateMotion',{dur:'3.2s',repeatCount:'indefinite',path:spine},d1);
+  var d2=el('circle',{r:'5',fill:'#A78BFA'},s);el('animateMotion',{dur:'3.2s',begin:'1.6s',repeatCount:'indefinite',path:spine,keyPoints:'1;0',keyTimes:'0;1',calcMode:'linear'},d2);
+  var lg=el('g',{},s),ly=TOP+4*GAP+B+H+44;
+  el('circle',{cx:CX-150,cy:ly-5,r:5,fill:'#5EEAD4'},lg);var t1=el('text',{x:CX-138,y:ly,fill:'#C9D9DF','font-family':'Be Vietnam Pro, system-ui, sans-serif','font-size':'14'},lg);t1.textContent='Yêu cầu đi xuống';
+  el('circle',{cx:CX+30,cy:ly-5,r:5,fill:'#A78BFA'},lg);var t2=el('text',{x:CX+42,y:ly,fill:'#C9D9DF','font-family':'Be Vietnam Pro, system-ui, sans-serif','font-size':'14'},lg);t2.textContent='Cập nhật thời gian thực đi lên';
 })();
 
-function refitLabels(){[].slice.call(document.querySelectorAll('#iso text')).forEach(function(t){var r=t.previousSibling;if(!r||r.tagName!=='rect')return;var bb=t.getBBox();r.setAttribute('x',bb.x-10);r.setAttribute('y',bb.y-5);r.setAttribute('width',bb.width+20);r.setAttribute('height',bb.height+10);});}
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(refitLabels);
+function refitBoxes(){[].slice.call(document.querySelectorAll('#iso rect[data-fit]')).forEach(function(r){var t=r.nextSibling.nextSibling;var bb=t.getBBox();r.setAttribute('width',Math.ceil(bb.x+bb.width+14-parseFloat(r.getAttribute('x'))));});}
+refitBoxes();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(refitBoxes);
 
 /* chapter backgrounds: wireframe isometric plates */
 function wire(svg,cx,cy,a,count,gap,delay){
