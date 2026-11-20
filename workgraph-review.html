@@ -1,0 +1,508 @@
+<title>Work Graph Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: review build of chapter 2 for the architecture profile. Same framed 1600x900 page as the deck; every content page is a beat-by-beat story whose animation carries the argument. A review strip below the frame lists the message and the real status of each page. Single dark look. */
+:root{
+  --bg:#03080D; --fg:#E8F3F6; --mu:#8FA3B0; --fa:#5B6F7C;
+  --line:rgba(94,234,212,.16); --line2:rgba(148,163,184,.15);
+  --teal:#5EEAD4; --cyan:#67E8F9; --violet:#A78BFA; --gold:#E8B86B; --blue:#60A5FA; --green:#4ADE80; --pink:#F472B6; --red:#FF6B6B;
+  --f-d:"Be Vietnam Pro",system-ui,"Segoe UI",sans-serif; --f-m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-d);overflow:hidden;-webkit-font-smoothing:antialiased}
+.topline{position:fixed;left:0;top:env(safe-area-inset-top,0px);height:2px;width:var(--p,20%);background:linear-gradient(90deg,var(--teal),var(--violet));transition:width .6s;z-index:30}
+.viewport{position:fixed;left:0;right:0;top:0;bottom:calc(158px + env(safe-area-inset-bottom,0px));overflow:hidden}
+.stage{position:absolute;left:50%;top:50%;width:1600px;height:900px;transform:translate(-50%,-50%) scale(var(--k,.5))}
+.frame{position:absolute;inset:0;border-radius:20px;border:1px solid rgba(94,234,212,.12);background:linear-gradient(180deg,#071520,#050F16);overflow:hidden}
+.fh{position:absolute;left:0;right:0;top:0;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;border-bottom:1px solid rgba(148,163,184,.08);z-index:5}
+.fh::after{content:"";position:absolute;left:0;bottom:-1px;width:42%;height:1px;background:linear-gradient(90deg,rgba(94,234,212,.7),transparent)}
+.fh .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:22px}
+.fh .brand svg{width:34px}
+.fh .kind{font-size:13px;font-weight:700;letter-spacing:.24em;color:#CFE3E8}
+.ff{position:absolute;left:0;right:0;bottom:0;height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;border-top:1px solid rgba(148,163,184,.08);font-family:var(--f-m);font-size:12.5px;letter-spacing:.06em;color:var(--mu);z-index:5}
+.ff .r b{color:var(--teal);font-weight:600;margin-right:14px}
+
+.slide{position:absolute;left:0;right:0;top:62px;bottom:50px;opacity:0;visibility:hidden;transition:opacity .5s,visibility 0s .5s}
+.slide.on{opacity:1;visibility:visible;transition:opacity .5s,visibility 0s}
+.ttl{font-weight:900;text-transform:uppercase;letter-spacing:-.02em;margin:0;line-height:1.04}
+.eyebrow{font-family:var(--f-m);font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--teal)}
+.ah{position:absolute;left:64px;top:24px;width:1180px;z-index:4}
+.ah h2{font-size:40px;margin-top:10px}
+.ah p{margin:8px 0 0;font-size:16.5px;line-height:1.5;color:#B9CBD3;max-width:1100px}
+.pageno{position:absolute;right:64px;top:20px;font-family:var(--f-m);font-weight:600;font-size:72px;color:rgba(148,163,184,.13)}
+.status{position:absolute;right:64px;top:112px;font-family:var(--f-m);font-size:11.5px;letter-spacing:.12em;padding:5px 11px;border-radius:999px;z-index:4}
+.status.live{color:var(--green);border:1px solid rgba(74,222,128,.45);background:rgba(74,222,128,.07)}
+.status.road{color:var(--gold);border:1px solid rgba(232,184,107,.5);background:rgba(232,184,107,.08)}
+.ic{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* narration bar */
+.narr{position:absolute;left:64px;right:64px;bottom:62px;height:52px;display:flex;align-items:center;gap:18px;padding:0 20px;border-radius:14px;border:1px solid var(--line);background:rgba(8,26,34,.85);z-index:6}
+.narr .no{font-family:var(--f-m);font-size:12.5px;letter-spacing:.14em;color:var(--teal);white-space:nowrap}
+.narr .tx{flex:1;font-size:18px;font-weight:600;transition:opacity .25s}
+.narr .tx.fade{opacity:0}
+.narr .seg{display:flex;gap:6px}
+.narr .seg i{width:22px;height:4px;border-radius:2px;background:rgba(148,163,184,.25);transition:background .3s}
+.narr .seg i.on{background:var(--teal)}
+
+/* graph primitives */
+svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visible;z-index:1;pointer-events:none}
+.e{fill:none;stroke:#4E6E7C;stroke-width:1.7;stroke-dasharray:var(--l);stroke-dashoffset:var(--l);opacity:.9;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1),stroke .4s,stroke-width .4s,opacity .5s}
+.e.in{stroke-dashoffset:0}
+.e.hl{stroke:var(--teal);stroke-width:3;filter:drop-shadow(0 0 6px rgba(94,234,212,.8))}
+.e.past{stroke-dasharray:5 7;stroke:#7B8E99;opacity:.7}
+.e.broken{stroke:var(--red);stroke-dasharray:3 8;opacity:.85}
+.e.off{opacity:0}
+.e.dim{opacity:.25}
+.el{position:absolute;transform:translate(-50%,-50%);font-family:var(--f-m);font-size:11.5px;color:#A9BEC6;background:#071822;border:1px solid var(--line2);border-radius:6px;padding:2px 7px;white-space:nowrap;opacity:0;transition:opacity .4s .5s,color .3s,border-color .3s;z-index:2}
+.el.in{opacity:1}
+.el.hl{color:var(--teal);border-color:rgba(94,234,212,.6)}
+.el.off,.el.dim{opacity:0}
+.el.past{color:var(--fa)}
+.gn{position:absolute;transform:translate(-50%,-50%) scale(.8);opacity:0;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:12px;background:#0A1D27;border:1px solid color-mix(in srgb,var(--c) 40%,transparent);box-shadow:0 10px 30px -12px rgba(0,0,0,.8);white-space:nowrap;z-index:3;transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .4s,filter .5s}
+.gn.in{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.gn .ti{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
+.gn .ti svg{width:17px;height:17px}
+.gn small{display:block;font-family:var(--f-m);font-size:10.5px;letter-spacing:.12em;color:var(--c)}
+.gn b{display:block;font-size:14.5px;font-weight:700}
+.gn.person{border-radius:999px;padding:5px 14px 5px 5px}
+.gn.person .ti{border-radius:50%;width:32px;height:32px;background:var(--c);color:#200716;font-weight:800;font-size:11.5px;font-family:var(--f-d)}
+.gn.agent .ti{background:linear-gradient(135deg,#4D8DFF,#5AF0FF);color:#061026}
+.gn.dim{opacity:.35}
+.gn.lit{border-color:var(--c);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 18%,transparent),0 0 30px -4px color-mix(in srgb,var(--c) 70%,transparent);transition-delay:var(--dl,0s)}
+.gn.dim.lit,.gn.dim.denied{opacity:1}.gn.dim.denied{opacity:.6}
+.e.dim.hl{opacity:1}.e.dim.broken{opacity:.85}.el.dim.hl{opacity:1}
+.gn.hl{border-color:var(--teal);box-shadow:0 0 0 4px rgba(94,234,212,.2),0 0 34px -4px rgba(94,234,212,.8)}
+.gn.gone{opacity:.3;filter:grayscale(1);transform:translate(-50%,-50%) translateY(190px) scale(.9)}
+.gn.left{filter:grayscale(1);opacity:.65}
+.gn.denied{border-color:var(--red);opacity:.55;filter:grayscale(.6)}
+.gn .bdg{position:absolute;right:-8px;top:-10px;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:999px;opacity:0;transform:scale(.6);transition:all .35s}
+.gn .bdg.ok{background:var(--green);color:#052012}
+.gn .bdg.no{background:var(--red);color:#2A0505}
+.gn .bdg.lb{background:#4A5560;color:#E8F3F6;right:auto;left:50%;top:auto;bottom:-24px;translate:-50% 0;white-space:nowrap}
+.gn.okd .bdg.ok,.gn.denied .bdg.no,.gn.left .bdg.lb,.gn.gone .bdg.lb{opacity:1;transform:scale(1)}
+.st{opacity:0;transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.st.in{opacity:1}
+.st.in.off{opacity:0}
+.runner{position:absolute;left:0;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--teal);box-shadow:0 0 14px var(--teal);opacity:0;z-index:4;offset-rotate:0deg}
+.runner.run{opacity:1;animation:run 3s ease-in-out infinite}
+@keyframes run{from{offset-distance:0%}to{offset-distance:100%}}
+
+/* ---------- chapter ---------- */
+.chap{position:absolute;inset:0;display:grid;place-items:center;z-index:2}
+.glass{width:960px;height:340px;border-radius:20px;border:1px solid rgba(94,234,212,.16);background:linear-gradient(180deg,rgba(14,40,50,.6),rgba(6,20,28,.6));backdrop-filter:blur(4px);display:grid;place-items:center;text-align:center}
+.glass > div{display:grid;justify-items:center;gap:20px}
+.pill{font-family:var(--f-m);font-size:13px;letter-spacing:.18em;color:var(--teal);border:1px solid rgba(94,234,212,.45);background:rgba(94,234,212,.06);border-radius:999px;padding:7px 16px}
+.glass h2{font-size:54px;color:#F4FAFB;max-width:860px}
+.glass p{margin:0;font-size:18px;color:#B9CBD3;max-width:760px;line-height:1.5}
+.net circle{fill:#67E8F9;opacity:.15;animation:nd 8s ease-in-out infinite;animation-delay:var(--dl)}
+.net line{stroke:#5EEAD4;stroke-width:1;opacity:.05;animation:ln 8s ease-in-out infinite;animation-delay:var(--dl)}
+@keyframes nd{0%,15%{opacity:.12;r:2}30%,80%{opacity:.85;r:4}100%{opacity:.12;r:2}}
+@keyframes ln{0%,25%{opacity:.04}40%,80%{opacity:.4}100%{opacity:.04}}
+
+/* ---------- problem ---------- */
+.silo{position:absolute;width:330px;height:206px;border-radius:16px;border:1px solid var(--line2);background:rgba(10,29,39,.92);padding:14px;box-sizing:border-box;z-index:2;display:grid;gap:10px;align-content:start}
+.silo h5{margin:0;font-family:var(--f-m);font-size:12px;letter-spacing:.16em;color:var(--c);display:flex;gap:8px;align-items:center}
+.silo h5::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--c)}
+.silo .it{border-radius:10px;border:1px solid var(--line2);background:rgba(255,255,255,.03);padding:10px 12px;font-size:14px;line-height:1.35;transition:all .4s}
+.silo .it small{display:block;font-size:11.5px;color:var(--mu);margin-top:3px}
+.silo.dim{opacity:.4}
+.silo .it.hl{border-color:var(--teal);box-shadow:0 0 0 3px rgba(94,234,212,.2);background:rgba(94,234,212,.08)}
+.thought{position:absolute;transform:translate(-50%,-50%);font-family:var(--f-m);font-size:12.5px;color:var(--pink);border:1px dashed rgba(244,114,182,.5);padding:6px 12px;border-radius:999px;white-space:nowrap;z-index:3}
+.q{position:absolute;transform:translate(-50%,-50%) scale(.7);background:#2A1A10;border:1px solid rgba(232,184,107,.6);color:#F5D9A8;font-weight:700;font-size:15px;padding:10px 16px;border-radius:14px;white-space:nowrap;z-index:4;transition:opacity .4s,transform .5s cubic-bezier(.3,1.6,.5,1)}
+.q.in{transform:translate(-50%,-50%) scale(1)}
+.q::before{content:"?";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--gold);color:#2A1A10;margin-right:8px;font-weight:900}
+
+/* ---------- capture ---------- */
+.feed{position:absolute;left:64px;top:160px;width:460px;height:438px;border-radius:16px;border:1px solid var(--line2);background:rgba(10,29,39,.6);padding:16px;box-sizing:border-box;display:grid;gap:8px;align-content:start}
+.feed h5,.canvas h5{margin:0 0 4px;font-family:var(--f-m);font-size:12px;letter-spacing:.16em;color:var(--mu)}
+.ev{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:10px 12px;border-radius:11px;border:1px solid transparent;opacity:0;transform:translateX(-14px);transition:all .45s}
+.ev.in{opacity:1;transform:none;border-color:rgba(94,234,212,.5);background:rgba(94,234,212,.07)}
+.ev.done{border-color:var(--line2);background:transparent;opacity:.6}
+.ev time{font-family:var(--f-m);font-size:12.5px;color:var(--teal);padding-top:2px}
+.ev b{font-size:14px;font-weight:600;line-height:1.4;display:block}
+.ev span{display:inline-block;margin-top:5px;font-family:var(--f-m);font-size:10.5px;letter-spacing:.1em;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);border-radius:999px;padding:1px 8px}
+.pipe{position:absolute;left:64px;top:612px;width:460px;height:62px;border-radius:14px;border:1px solid var(--line2);background:rgba(10,29,39,.6);display:flex;align-items:center;justify-content:space-between;padding:0 16px;box-sizing:border-box}
+.pipe span{font-family:var(--f-m);font-size:11.5px;color:#CFE3E8;padding:5px 9px;border-radius:8px;border:1px solid var(--line2);background:#071822;position:relative;z-index:1}
+.pipe em{flex:1;height:1px;background:var(--line2);margin:0 6px}
+.pipe .dot{position:absolute;left:16px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--teal);box-shadow:0 0 12px var(--teal);opacity:0}
+.pipe .dot.go{animation:pipe 1.4s ease-in-out forwards}
+@keyframes pipe{0%{left:16px;opacity:1}90%{left:calc(100% - 26px);opacity:1}100%{left:calc(100% - 26px);opacity:0}}
+.canvas{position:absolute;left:560px;top:160px;width:976px;height:514px;border-radius:16px;border:1px solid var(--line2);background-color:rgba(8,24,32,.55);background-image:linear-gradient(rgba(94,234,212,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(94,234,212,.04) 1px,transparent 1px);background-size:40px 40px;padding:14px 16px;box-sizing:border-box}
+.chips{position:absolute;display:flex;gap:8px;z-index:4}
+.chips span{font-size:12.5px;font-weight:600;color:var(--teal);border:1px solid rgba(94,234,212,.45);background:rgba(94,234,212,.08);border-radius:999px;padding:5px 11px}
+
+/* ---------- persist ---------- */
+.qa{position:absolute;left:1040px;top:160px;width:496px;height:514px;border-radius:16px;border:1px solid var(--line2);background:rgba(10,29,39,.7);padding:18px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;z-index:2}
+.qa h5{margin:0;font-family:var(--f-m);font-size:12px;letter-spacing:.16em;color:var(--mu)}
+.ask{display:flex;gap:12px;align-items:flex-start}
+.ask .av{width:34px;height:34px;border-radius:50%;background:var(--green);color:#052012;display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
+.ask p{margin:0;padding:10px 14px;border-radius:4px 14px 14px 14px;background:#0F2A35;font-size:15.5px;font-weight:600}
+.ans{border-radius:14px;border:1px solid rgba(94,234,212,.35);background:rgba(94,234,212,.05);padding:16px;display:grid;gap:10px}
+.ans .hd{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--teal)}
+.ans .hd svg{width:22px}
+.ans p{margin:0;font-size:15px;line-height:1.55;color:#DCEBEF}
+.ans p mark{background:none;color:var(--teal);font-weight:700}
+.cites{display:flex;flex-wrap:wrap;gap:6px}
+.cites span{font-family:var(--f-m);font-size:11.5px;padding:3px 8px;border-radius:6px;border:1px solid var(--line2);color:#CFE3E8;background:#071822}
+.path{font-family:var(--f-m);font-size:12px;color:var(--mu);line-height:1.6}
+.path b{color:var(--teal);font-weight:600}
+
+/* ---------- agent ---------- */
+.ring{fill:none;stroke:rgba(94,234,212,.35);stroke-dasharray:4 8;opacity:0;transform:scale(.2);transform-box:fill-box;transform-origin:center;transition:opacity .6s,transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.ring.in{opacity:1;transform:scale(1)}
+.ring.r2{transition-delay:.5s}
+.ringlab{position:absolute;font-family:var(--f-m);font-size:11px;letter-spacing:.12em;color:rgba(94,234,212,.7);transform:translate(-50%,-50%)}
+.pkg{position:absolute;left:820px;top:160px;width:330px;height:514px;border-radius:16px;border:1px solid var(--line2);background:rgba(10,29,39,.75);padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:9px;z-index:2}
+.pkg h5,.out h5{margin:0 0 4px;font-family:var(--f-m);font-size:12px;letter-spacing:.16em;color:var(--mu);display:flex;justify-content:space-between}
+.pkg h5 b{color:var(--teal);font-weight:600}
+.pi{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:center;padding:9px 11px;border-radius:10px;border:1px solid var(--line2);background:rgba(255,255,255,.03);opacity:0;transform:translateX(-40px);transition:opacity .45s,transform .55s cubic-bezier(.2,.8,.2,1);transition-delay:var(--dl,0s)}
+.pi.in{opacity:1;transform:none}
+.pi .ti{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
+.pi .ti svg{width:16px;height:16px}
+.pi b{font-size:13.5px;font-weight:700;display:block}
+.pi span{font-size:11.5px;color:var(--mu)}
+.pi.skip{border-style:dashed;border-color:rgba(255,107,107,.45)}
+.pi.skip b{color:#F3A3A3;text-decoration:line-through}
+.empty{margin-top:auto;font-size:12.5px;color:var(--mu);border-top:1px solid var(--line2);padding-top:10px;display:grid;gap:4px}
+.empty b{color:var(--fg);font-weight:600}
+.out{position:absolute;left:1180px;top:160px;width:356px;height:514px;border-radius:16px;border:1px solid var(--line2);background:rgba(10,29,39,.75);padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px;z-index:2}
+.prop{border-radius:14px;border:1px solid rgba(103,232,249,.45);background:rgba(103,232,249,.05);padding:14px;display:grid;gap:10px}
+.prop .lv{font-family:var(--f-m);font-size:11px;color:var(--mu);display:flex;justify-content:space-between}
+.prop b{font-size:16px}
+.prop ol{margin:0;padding-left:18px;display:grid;gap:8px;font-size:13.5px;line-height:1.45;color:#DCEBEF}
+.prop ol i{font-style:normal;font-family:var(--f-m);font-size:10.5px;color:var(--teal);border:1px solid rgba(94,234,212,.45);border-radius:5px;padding:0 5px;margin-left:4px;white-space:nowrap}
+.prop .act{display:flex;gap:8px}
+.btn{font:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:8px 14px;border:1px solid var(--line2);background:#0F2A35;color:var(--fg)}
+.btn.pri{background:linear-gradient(135deg,#2DD4BF,#67E8F9);color:#032026;border-color:transparent}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+.cmp div{border-radius:10px;padding:10px;font-size:12.5px;line-height:1.4;border:1px solid var(--line2)}
+.cmp div b{display:block;font-family:var(--f-m);font-size:10.5px;letter-spacing:.12em;margin-bottom:4px}
+.cmp .no{color:var(--mu)}.cmp .no b{color:var(--red)}
+.cmp .yes{border-color:rgba(94,234,212,.45);background:rgba(94,234,212,.06)}.cmp .yes b{color:var(--teal)}
+
+/* ---------- review strip + pager ---------- */
+.review{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(1240px,calc(100vw - 32px));height:76px;box-sizing:border-box;display:flex;align-items:center;gap:16px;padding:0 16px;border-radius:14px;border:1px dashed rgba(232,184,107,.45);background:rgba(20,16,8,.6);z-index:30}
+.review .tag{font-family:var(--f-m);font-size:11px;letter-spacing:.14em;color:var(--gold);border:1px solid rgba(232,184,107,.5);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.review .txt{flex:1;min-width:0;display:grid;gap:3px}
+.review .msg{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.review .real{font-size:12.5px;color:#C9B48F;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rb{all:unset;cursor:pointer;font-size:13px;font-weight:600;color:#F2E2C2;padding:8px 11px;border-radius:9px;border:1px solid rgba(232,184,107,.35);white-space:nowrap}
+.rb:hover{border-color:var(--gold)}
+.rb:focus-visible,.pg:focus-visible,.dots button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.pager{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:30}
+.pg{all:unset;cursor:pointer;font-size:14px;font-weight:600;color:#CFE3E8;padding:10px 16px;border-radius:12px;background:rgba(10,24,32,.9);border:1px solid rgba(148,163,184,.18);white-space:nowrap}
+.pg:hover{border-color:var(--teal)}
+.pg[aria-disabled="true"]{color:var(--fa);cursor:default}
+.dots{display:flex;gap:6px;align-items:center;padding:12px 14px;border-radius:12px;background:rgba(10,24,32,.9);border:1px solid rgba(148,163,184,.18)}
+.dots button{all:unset;cursor:pointer;width:6px;height:6px;border-radius:3px;background:rgba(148,163,184,.4);transition:width .3s}
+.dots button.cur{width:22px;background:var(--teal)}
+.count{font-family:var(--f-m);font-size:14px;color:var(--teal);padding:9px 14px;border-radius:12px;background:rgba(10,24,32,.9);border:1px solid rgba(148,163,184,.18)}
+@media (max-width:760px){.review .real{display:none}.review .tag{display:none}.dots{display:none}.rb.hide-s{display:none}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{transition-duration:0s!important;animation:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="uwg" x1="0" y1="0" x2="128" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4D8DFF"/><stop offset=".52" stop-color="#35CBFF"/><stop offset="1" stop-color="#5AF0FF"/></linearGradient>
+    <symbol id="uwmark" viewBox="0 0 128 92"><g fill="url(#uwg)"><circle cx="15" cy="14" r="14"/><circle cx="113" cy="14" r="14"/><rect x="0" y="31.5" width="30" height="47.5" rx="15"/><rect x="98" y="31.5" width="30" height="47.5" rx="15"/><path d="M0 53.675C5.748 57.151 10.517 61.753 15.81 65.817C17.818 67.351 21.31 69.981 23.989 70C26.776 70 30.538 67.104 32.606 65.495C34.078 64.351 35.51 63.155 36.942 61.963C44.942 55.303 53.021 48.85 64 48.8C74.979 48.85 83.058 55.303 91.058 61.963C92.49 63.155 93.922 64.351 95.394 65.495C97.462 67.104 101.224 70 104.011 70C106.69 69.981 110.182 67.351 112.19 65.817C117.483 61.753 122.252 57.151 128 53.675L128 81.36C124.737 84.004 121.382 86.493 117.651 88.444C113.356 90.66 108.927 91.965 104.069 92C93.08 91.978 84.989 85.536 76.982 78.87C75.508 77.643 74.035 76.412 72.519 75.237C70.459 73.639 66.769 70.813 64 70.8C61.231 70.813 57.541 73.639 55.481 75.237C53.965 76.412 52.492 77.643 51.018 78.87C43.011 85.536 34.92 91.978 23.931 92C19.073 91.965 14.644 90.66 10.349 88.444C6.618 86.493 3.263 84.004 0 81.36Z"/></g></symbol>
+    <symbol id="i-task" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></symbol>
+    <symbol id="i-meet" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10l5-3v10l-5-3"/></symbol>
+    <symbol id="i-proj" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="3.5"/><path d="M12 4v4M9 13h.01M15 13h.01M9.5 16.5h5"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></symbol>
+  </defs>
+</svg>
+
+<div class="topline" id="topline"></div>
+<div class="viewport" id="vp">
+<div class="stage" id="stage">
+<div class="frame">
+  <header class="fh"><div class="brand"><svg viewBox="0 0 128 92" aria-hidden="true"><use href="#uwmark"/></svg>UniWork</div><div class="kind">ARCHITECTURE PROFILE</div></header>
+
+  <!-- 1 · CHAPTER -->
+  <section class="slide" id="s-chap">
+    <svg class="layer net" id="net" viewBox="0 0 1600 788" aria-hidden="true"></svg>
+    <div class="chap"><div class="glass"><div>
+      <span class="pill">CHƯƠNG 2</span>
+      <h2 class="ttl">Work Graph · Bộ nhớ của doanh nghiệp</h2>
+      <p>Ngữ cảnh công việc được ghi lại mỗi ngày, ở lại với doanh nghiệp, và sẵn sàng cho người mới lẫn agent AI.</p>
+    </div></div></div>
+  </section>
+
+  <!-- 2 · PROBLEM -->
+  <section class="slide" id="s-prob">
+    <div class="ah"><div class="eyebrow">Vấn đề</div><h2 class="ttl">Tri thức đang nằm ở đâu?</h2><p>Mỗi công cụ giữ một mảnh. Thứ nối các mảnh lại với nhau là trí nhớ của từng người.</p></div>
+    <div class="pageno">02</div>
+    <svg class="layer" data-edges></svg>
+    <div class="silo st" style="left:96px;top:170px;--c:var(--blue)" data-st="1:in 5:dim"><h5>TRÒ CHUYỆN</h5><div class="it" id="p-c1">#marketing: chốt đổi giá gói Pro<small>Tin nhắn · 08/11</small></div><div class="it" id="p-c2">Khách A phàn nàn trang tải chậm<small>Tin nhắn · 12/11</small></div></div>
+    <div class="silo st" style="left:1174px;top:170px;--c:var(--violet)" data-st="1:in 5:dim"><h5>CUỘC HỌP</h5><div class="it" id="p-m1">Họp demo khách hàng<small>12/11 · Hà, Minh</small></div><div class="it" id="p-m2">Kết luận: cần tối ưu SEO<small>Ghi chú cuối buổi</small></div></div>
+    <div class="silo st" style="left:96px;top:420px;--c:var(--gold)" data-st="1:in 5:dim"><h5>TÀI LIỆU</h5><div class="it" id="p-d1">Biên bản họp demo.docx<small>Thư mục dự án</small></div><div class="it" id="p-d2">Báo cáo tốc độ trang.xlsx<small>Thư mục cá nhân của Minh</small></div></div>
+    <div class="silo st" style="left:1174px;top:420px;--c:var(--green)" data-st="1:in 5:dim"><h5>CÔNG VIỆC</h5><div class="it" id="p-t1" data-st="4:hl">Kiểm tra SEO các trang con<small>Không mô tả · không liên kết</small></div><div class="it" id="p-t2">Chốt nội dung trang giá<small>Đang làm</small></div></div>
+    <div class="gn person" id="p-minh" style="left:800px;top:400px;--c:var(--pink)" data-st="1:in 3:gone"><span class="ti">MI</span><div><b>Minh</b></div><span class="bdg lb">Đã chuyển công tác</span></div>
+    <div class="thought st" style="left:800px;top:330px" data-st="2:in 3:off">vì sao · ai quyết · tài liệu nào</div>
+    <div class="gn agent" id="p-new" style="left:800px;top:400px;--c:var(--cyan)" data-st="4:in"><span class="ti"><svg class="ic"><use href="#i-bot"/></svg></span><div><small>NGƯỜI MỚI / AGENT</small><b>Nhận việc "Kiểm tra SEO"</b></div></div>
+    <div class="q st" style="left:610px;top:300px" data-st="5:in">Việc này từ đâu ra?</div>
+    <div class="q st" style="left:990px;top:300px" data-st="5:in">Ai đã quyết?</div>
+    <div class="q st" style="left:800px;top:500px" data-st="5:in">Dựa trên tài liệu nào?</div>
+  </section>
+
+  <!-- 3 · CAPTURE -->
+  <section class="slide" id="s-cap">
+    <div class="ah"><div class="eyebrow">Work Graph</div><h2 class="ttl">Ngữ cảnh được ghi lại mỗi ngày</h2><p>Không cần nhập tay. Mỗi việc làm thường ngày trong UniWork tự thành một nút và một quan hệ trỏ về bản ghi gốc.</p></div>
+    <div class="pageno">03</div>
+    <span class="status live">ĐANG CHẠY</span>
+    <div class="feed"><h5>HOẠT ĐỘNG HÔM NAY</h5>
+      <div class="ev" data-st="1:in 2:done" style="--c:var(--violet)"><time>09:00</time><div><b>Hà tạo cuộc họp "Demo khách hàng" trong dự án Ra mắt Q1</b><span>CUỘC HỌP</span></div></div>
+      <div class="ev" data-st="2:in 3:done" style="--c:var(--violet)"><time>09:30</time><div><b>Hà và Minh tham gia cuộc họp</b><span>CUỘC HỌP</span></div></div>
+      <div class="ev" data-st="3:in 4:done" style="--c:var(--green)"><time>10:10</time><div><b>Từ cuộc họp, Hà tạo việc "Kiểm tra SEO", giao Minh</b><span>CÔNG VIỆC</span></div></div>
+      <div class="ev" data-st="4:in 5:done" style="--c:var(--gold)"><time>10:40</time><div><b>Minh tải "Biên bản họp demo" lên dự án</b><span>TÀI LIỆU</span></div></div>
+      <div class="ev" data-st="5:in 6:done" style="--c:var(--blue)"><time>11:15</time><div><b>Việc SEO được bàn trong kênh #seo</b><span>UNICHAT</span></div></div>
+    </div>
+    <div class="pipe"><span>Lệnh nghiệp vụ</span><em></em><span>Outbox</span><em></em><span>Projector</span><em></em><span>Work Graph</span><i class="dot" id="pipedot"></i></div>
+    <div class="canvas"><h5>WORK GRAPH · DỰ ÁN RA MẮT Q1</h5></div>
+    <svg class="layer" data-edges></svg>
+    <div class="chips st" style="left:960px;top:176px" data-st="6:in"><span>Tự động</span><span>Có bản ghi gốc</span><span>Không suy đoán</span><span>Quyền theo bản ghi gốc</span></div>
+  </section>
+
+  <!-- 4 · PERSIST -->
+  <section class="slide" id="s-per">
+    <div class="ah"><div class="eyebrow">Tri thức ở lại</div><h2 class="ttl">Người có thể đi, tri thức ở lại</h2><p>Khi một người rời dự án, đồ thị vẫn giữ mọi quan hệ và lịch sử. Câu hỏi "vì sao" được trả lời bằng đường đi trên đồ thị.</p></div>
+    <div class="pageno">04</div>
+    <div class="canvas" style="left:64px;width:956px"><h5>WORK GRAPH · DỰ ÁN RA MẮT Q1</h5></div>
+    <svg class="layer" data-edges></svg>
+    <div class="runner" id="runner" data-st="4:run"></div>
+    <div class="qa">
+      <h5>HỎI UNI</h5>
+      <div class="ask st" data-st="3:in"><span class="av">LA</span><p>Vì sao có việc "Kiểm tra SEO"? Ai đã quyết?</p></div>
+      <div class="ans st" data-st="5:in">
+        <div class="hd"><svg viewBox="0 0 128 92"><use href="#uwmark"/></svg>UNI trả lời</div>
+        <p>Việc được tạo từ <mark>Họp demo khách hàng 12/11</mark>, do Hà tạo và giao Minh. Hà và Minh cùng dự họp. Tài liệu liên quan là <mark>Biên bản họp demo</mark> trong dự án Ra mắt Q1.</p>
+        <div class="path">Đường đi: <b>Việc</b> → xuất phát từ → <b>Cuộc họp</b> → thuộc về → <b>Dự án</b> ← thuộc về ← <b>Tài liệu</b></div>
+        <div class="cites"><span>Họp demo khách hàng</span><span>Biên bản họp demo</span><span>Hà</span><span>Minh</span></div>
+      </div>
+      <span class="status road st" style="position:static;align-self:flex-start;margin-top:auto" data-st="5:in">HỎI UNI TRÊN ĐỒ THỊ · LỘ TRÌNH</span>
+    </div>
+  </section>
+
+  <!-- 5 · AGENT -->
+  <section class="slide" id="s-agt">
+    <div class="ah"><div class="eyebrow">Agent vào việc</div><h2 class="ttl">Agent vào việc là có ngữ cảnh ngay</h2><p>Giao việc cho agent, Work Graph gom ngữ cảnh quanh việc đó trong phạm vi quyền, để agent bắt đầu ngay thay vì hỏi lại từ đầu.</p></div>
+    <div class="pageno">05</div>
+    <span class="status road">CONTEXT ENGINE · LỘ TRÌNH</span>
+    <div class="canvas" style="left:64px;width:724px"><h5>WORK GRAPH · QUANH VIỆC "KIỂM TRA SEO"</h5></div>
+    <svg class="layer" data-edges><circle class="ring" data-st="2:in" cx="420" cy="440" r="165"/><circle class="ring r2" data-st="2:in" cx="420" cy="440" r="290"/></svg>
+    <div class="pkg">
+      <h5>GÓI NGỮ CẢNH <b class="st" data-st="4:in">5 NGUỒN</b></h5>
+      <div class="pi" data-st="4:in" style="--c:var(--teal);--dl:0s"><span class="ti"><svg class="ic"><use href="#i-proj"/></svg></span><div><b>Dự án Ra mắt Q1</b><span>việc thuộc dự án này</span></div></div>
+      <div class="pi" data-st="4:in" style="--c:var(--violet);--dl:.15s"><span class="ti"><svg class="ic"><use href="#i-meet"/></svg></span><div><b>Họp demo khách hàng 12/11</b><span>nguồn gốc của việc</span></div></div>
+      <div class="pi" data-st="4:in" style="--c:var(--gold);--dl:.3s"><span class="ti"><svg class="ic"><use href="#i-doc"/></svg></span><div><b>Biên bản họp demo</b><span>tài liệu của dự án</span></div></div>
+      <div class="pi" data-st="4:in" style="--c:var(--blue);--dl:.45s"><span class="ti"><svg class="ic"><use href="#i-chat"/></svg></span><div><b>Kênh #seo</b><span>nơi việc đã được bàn</span></div></div>
+      <div class="pi" data-st="4:in" style="--c:var(--pink);--dl:.6s"><span class="ti"><svg class="ic"><use href="#i-user"/></svg></span><div><b>Hà, Minh</b><span>người tạo và người dự họp</span></div></div>
+      <div class="pi skip" data-st="3:in" style="--c:var(--red)"><span class="ti"><svg class="ic"><use href="#i-lock"/></svg></span><div><b>Hợp đồng khách A</b><span>không đủ quyền xem · bỏ qua</span></div></div>
+    </div>
+    <div class="out">
+      <h5>KẾT QUẢ CỦA AGENT</h5>
+      <div class="prop st" data-st="5:in">
+        <div class="lv"><span>ĐỀ XUẤT · CHỜ NGƯỜI DUYỆT</span><span>Agent SEO</span></div>
+        <b>Kế hoạch kiểm tra SEO</b>
+        <ol>
+          <li>Ưu tiên các trang khách nêu trong buổi demo<i>Họp demo</i></li>
+          <li>Đo tốc độ theo kết luận trong biên bản<i>Biên bản</i></li>
+          <li>Rà lại checklist đã thống nhất<i>#seo</i></li>
+          <li>Báo kết quả cho người tạo việc<i>Hà</i></li>
+        </ol>
+        <div class="act"><button class="btn pri" type="button" tabindex="-1">Áp dụng</button><button class="btn" type="button" tabindex="-1">Bỏ qua</button></div>
+      </div>
+      <div class="cmp st" data-st="5:in"><div class="no"><b>KHÔNG CÓ ĐỒ THỊ</b>Agent chỉ có tiêu đề việc, phải hỏi lại từ đầu.</div><div class="yes"><b>CÓ WORK GRAPH</b>Bắt đầu với 5 nguồn có trích dẫn.</div></div>
+    </div>
+  </section>
+
+  <div class="narr" id="narr"><span class="no" id="narrNo"></span><span class="tx" id="narrTx"></span><span class="seg" id="narrSeg"></span></div>
+  <footer class="ff"><span>• CHƯƠNG 02 · WORK GRAPH &amp; TRI THỨC DOANH NGHIỆP</span><span class="r"><b>UW</b>UNIWORK | HỒ SƠ KIẾN TRÚC</span></footer>
+</div>
+</div>
+</div>
+
+<div class="review" role="region" aria-label="Ghi chú duyệt">
+  <span class="tag">BẢN DUYỆT</span>
+  <div class="txt"><span class="msg" id="rvMsg"></span><span class="real" id="rvReal"></span></div>
+  <button class="rb" id="rvBack" type="button" aria-label="Bước trước">◀</button>
+  <button class="rb" id="rvPlay" type="button">❚❚ Dừng</button>
+  <button class="rb" id="rvNext" type="button" aria-label="Bước sau">▶</button>
+  <button class="rb hide-s" id="rvReplay" type="button">↺ Chạy lại</button>
+</div>
+<nav class="pager" aria-label="Chuyển trang">
+  <button class="pg" id="prev" type="button">← Trước</button>
+  <div class="dots" id="dots"></div>
+  <span class="count" id="count"></span>
+  <button class="pg" id="next" type="button">Tiếp →</button>
+</nav>
+
+<script>
+(function(){
+"use strict";
+var RM=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var NS='http://www.w3.org/2000/svg';
+var TYPES={task:['VIỆC','#4ADE80','i-task'],meet:['CUỘC HỌP','#A78BFA','i-meet'],proj:['DỰ ÁN','#5EEAD4','i-proj'],doc:['TÀI LIỆU','#E8B86B','i-doc'],chat:['KÊNH','#60A5FA','i-chat'],agent:['AGENT','#67E8F9','i-bot'],person:['','#F472B6',''],lock:['TÀI LIỆU','#FF6B6B','i-lock']};
+
+/* graph pages: nodes and edges as data */
+var GRAPHS={
+  's-cap':{nodes:[
+    ['P','proj','Ra mắt Q1',1340,330,'1:in 6:hl'],['M','meet','Họp demo khách hàng',960,262,'1:in'],
+    ['HA','person','Hà',660,212,'2:in'],['MI','person','Minh',660,420,'2:in'],
+    ['T','task','Kiểm tra SEO',1010,520,'3:in'],['D','doc','Biên bản họp demo',1420,470,'4:in'],['C','chat','#seo',1250,630,'5:in']],
+   edges:[['M','P','thuộc về','1:in'],['HA','M','tham dự','2:in'],['MI','M','tham dự','2:in'],['T','M','xuất phát từ','3:in'],['T','MI','phụ trách','3:in'],['T','P','thuộc về','3:in'],['D','P','thuộc về','4:in'],['T','C','được bàn trong','5:in']]},
+  's-per':{nodes:[
+    ['P','proj','Ra mắt Q1',820,290,'0:in 4:hl'],['M','meet','Họp demo khách hàng',500,250,'0:in 4:hl'],
+    ['HA','person','Hà',190,222,'0:in 4:hl'],['MI','person','Minh',190,420,'0:in 2:left 4:hl'],['LA','person','Lan',230,612,'2:in'],
+    ['T','task','Kiểm tra SEO',520,500,'0:in 4:hl'],['D','doc','Biên bản họp demo',860,470,'0:in 4:hl'],['C','chat','#seo',760,630,'0:in']],
+   edges:[['M','P','thuộc về','0:in 4:hl'],['HA','M','tham dự','0:in 4:hl'],['MI','M','tham dự','0:in 4:hl'],['T','M','xuất phát từ','0:in 4:hl'],['T','MI','phụ trách','0:in 2:past','2:phụ trách đến 20/11'],['T','LA','phụ trách từ 20/11','2:in'],['T','P','thuộc về','0:in'],['D','P','thuộc về','0:in 4:hl'],['T','C','được bàn trong','0:in']]},
+  's-agt':{nodes:[
+    ['T','task','Kiểm tra SEO',420,440,'0:in 1:hl'],['AG','agent','Agent SEO',420,214,'1:in'],
+    ['M','meet','Họp demo',220,350,'0:in 0:dim 2:lit'],['P','proj','Ra mắt Q1',612,330,'0:in 0:dim 2:lit'],['C','chat','#seo',420,606,'0:in 0:dim 2:lit'],
+    ['HA','person','Hà',130,220,'0:in 0:dim 2:lit'],['MI','person','Minh',130,520,'0:in 0:dim 2:lit'],
+    ['D','doc','Biên bản họp demo',640,196,'0:in 0:dim 2:lit 3:okd'],['K','lock','Hợp đồng khách A',640,620,'0:in 0:dim 3:denied']],
+   edges:[['T','AG','phụ trách','1:in'],['T','M','xuất phát từ','0:in 0:dim 2:hl'],['T','P','thuộc về','0:in 0:dim 2:hl'],['T','C','được bàn trong','0:in 0:dim 2:hl'],['HA','M','tham dự','0:in 0:dim 2:hl'],['MI','M','tham dự','0:in 0:dim 2:hl'],['D','P','thuộc về','0:in 0:dim 2:hl'],['K','P','thuộc về','0:in 0:dim 3:broken']]}
+};
+var HOP2={'s-agt':{HA:.7,MI:.7,D:.7,K:.7}};
+
+function buildGraph(id){
+  var g=GRAPHS[id],sl=document.getElementById(id),svg=sl.querySelector('svg[data-edges]'),pos={};
+  g.nodes.forEach(function(n){
+    var t=TYPES[n[1]],d=document.createElement('div');
+    d.className='gn'+(n[1]==='person'?' person':'')+(n[1]==='agent'?' agent':'');
+    d.style.left=n[3]+'px';d.style.top=n[4]+'px';d.style.setProperty('--c',t[1]);d.dataset.st=n[5];
+    if(HOP2[id]&&HOP2[id][n[0]])d.style.setProperty('--dl',HOP2[id][n[0]]+'s');
+    if(n[1]==='person'){d.innerHTML='<span class="ti">'+n[2].slice(0,2).toUpperCase()+'</span><div><b></b></div><span class="bdg lb">Ngừng hoạt động</span>';d.querySelector('b').textContent=n[2];}
+    else{d.innerHTML='<span class="ti"><svg class="ic"><use href="#'+t[2]+'"/></svg></span><div><small>'+t[0]+'</small><b></b></div><span class="bdg ok">✓ được xem</span><span class="bdg no">🔒 không đủ quyền</span>';d.querySelector('b').textContent=n[2];}
+    sl.appendChild(d);pos[n[0]]=[n[3],n[4]];
+  });
+  g.edges.forEach(function(e){
+    var a=pos[e[0]],b=pos[e[1]],p=document.createElementNS(NS,'path');
+    p.setAttribute('d','M'+a[0]+' '+a[1]+' L'+b[0]+' '+b[1]);p.setAttribute('class','e');p.dataset.st=e[3];
+    svg.appendChild(p);p.style.setProperty('--l',Math.ceil(p.getTotalLength()));
+    var l=document.createElement('span');l.className='el';l.textContent=e[2];l.dataset.st=e[3].replace(/\b(\d):past/,'$1:past');if(e[4])l.dataset.txt=e[4];l.dataset.base=e[2];
+    var mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;l.style.left=mx+'px';l.style.top=my+'px';sl.appendChild(l);
+  });
+  return pos;
+}
+var posPer=buildGraph('s-cap');posPer=buildGraph('s-per');buildGraph('s-agt');
+/* the runner on the "why" page travels task → meeting → project → document */
+(function(){var p=posPer,r=document.getElementById('runner');
+  r.style.offsetPath="path('M"+p.T.join(' ')+" L"+p.M.join(' ')+" L"+p.P.join(' ')+" L"+p.D.join(' ')+"')";})();
+
+/* problem page: lines that live only in Minh's head */
+(function(){
+  var sl=document.getElementById('s-prob'),svg=sl.querySelector('svg[data-edges]');
+  var minh=[800,400];
+  ['p-c1','p-c2','p-m1','p-m2','p-d1','p-t1'].forEach(function(id,i){
+    var it=document.getElementById(id),silo=it.parentElement;
+    var x=parseFloat(silo.style.left)+(silo.style.left==='96px'?330:0),y=parseFloat(silo.style.top)+it.offsetTop+it.offsetHeight/2;
+    var p=document.createElementNS(NS,'path');p.setAttribute('d','M'+x+' '+y+' Q'+((x+minh[0])/2)+' '+(y+(minh[1]-y)*.2)+' '+minh[0]+' '+minh[1]);
+    p.setAttribute('class','e');p.style.stroke='#F472B6';p.dataset.st='2:in 3:broken 4:off';svg.appendChild(p);p.style.setProperty('--l',Math.ceil(p.getTotalLength()));
+  });
+})();
+
+/* chapter page: a graph slowly forming behind the title */
+(function(){
+  var s=document.getElementById('net'),pts=[[180,150],[330,90],[470,200],[300,300],[150,420],[420,470],[260,600],[520,640],[1080,120],[1240,220],[1400,110],[1460,330],[1300,420],[1150,560],[1380,620],[1500,520]];
+  var links=[[0,1],[1,2],[2,3],[3,0],[3,4],[3,5],[4,6],[5,7],[6,7],[8,9],[9,10],[9,12],[10,11],[11,12],[12,13],[13,14],[12,14],[14,15],[11,15]];
+  links.forEach(function(l,i){var a=pts[l[0]],b=pts[l[1]],ln=document.createElementNS(NS,'line');ln.setAttribute('x1',a[0]);ln.setAttribute('y1',a[1]);ln.setAttribute('x2',b[0]);ln.setAttribute('y2',b[1]);ln.style.setProperty('--dl',(-i*.42)+'s');s.appendChild(ln);});
+  pts.forEach(function(p,i){var c=document.createElementNS(NS,'circle');c.setAttribute('cx',p[0]);c.setAttribute('cy',p[1]);c.setAttribute('r','3');c.style.setProperty('--dl',(-i*.5)+'s');s.appendChild(c);});
+})();
+
+/* pages and their beats */
+var PAGES=[
+  {id:'s-chap',beats:[],msg:'Mở chương 2: Work Graph là bộ nhớ của doanh nghiệp.',real:'Nền phía sau là một đồ thị đang dần nối lại, ý: ngữ cảnh được dựng lên từ công việc.'},
+  {id:'s-prob',msg:'Vấn đề: ngữ cảnh nằm trong đầu từng người, người đi thì ngữ cảnh mất theo.',real:'Trang minh họa tình huống, không phải tính năng.',beats:[
+    'Mỗi công cụ giữ một mảnh thông tin: tin nhắn, cuộc họp, tài liệu, công việc.',
+    'Mối liên hệ giữa các mảnh chỉ nằm trong đầu Minh.',
+    'Minh chuyển công tác. Các mối liên hệ đứt theo.',
+    'Người mới, hoặc một agent, nhận việc "Kiểm tra SEO"…',
+    '…và không ai trả lời được: việc từ đâu ra, ai quyết, dựa trên tài liệu nào.']},
+  {id:'s-cap',msg:'Mỗi việc thường ngày tự thành nút và quan hệ có bản ghi gốc, không nhập tay.',real:'Đang chạy: Work Graph tự dựng từ việc, cuộc họp, dự án, người và agent, phòng ban, tài liệu, kênh chat. Quan hệ "được bàn trong" do người gắn thuộc lát 3, chưa làm.',beats:[
+    'Hà tạo cuộc họp trong dự án: đồ thị có nút Cuộc họp, thuộc về Dự án.',
+    'Hà và Minh tham gia: hai nút Người, quan hệ "tham dự".',
+    'Việc tạo từ cuộc họp: quan hệ "xuất phát từ", "phụ trách", "thuộc về".',
+    'Biên bản tải lên dự án: nút Tài liệu nối vào Dự án.',
+    'Việc được bàn trong kênh #seo: quan hệ "được bàn trong".',
+    'Mỗi quan hệ trỏ về một bản ghi gốc. Không suy đoán, không nhập tay.']},
+  {id:'s-per',msg:'Người rời đi, quan hệ và lịch sử vẫn còn; câu hỏi "vì sao" trả lời bằng đường đi trên đồ thị.',real:'Đang chạy: giữ dữ liệu khi tài khoản ngừng hoạt động, lịch sử người phụ trách, panel Liên quan. Lộ trình: Hỏi UNI trả lời từ đồ thị (Context Engine).',beats:[
+    'Đồ thị của dự án sau một tháng làm việc.',
+    'Minh chuyển công tác: tài khoản ngừng hoạt động, việc chuyển cho Lan, lịch sử phụ trách vẫn giữ.',
+    'Lan nhận việc và hỏi: vì sao có việc này, ai đã quyết?',
+    'Đồ thị đi từ việc về cuộc họp gốc, người dự họp và tài liệu của dự án.',
+    'Câu trả lời có trích nguồn, kể cả phần việc của người đã rời đi.']},
+  {id:'s-agt',msg:'Giao việc cho agent, đồ thị gom ngữ cảnh trong phạm vi quyền, agent bắt đầu ngay.',real:'Lộ trình: Context Engine và agent runtime. Phần kiểm quyền theo bản ghi gốc và đề xuất rồi người duyệt đã là luật hiện hành của nền tảng.',beats:[
+    'Lan giao việc "Kiểm tra SEO" cho Agent SEO.',
+    'Work Graph đi từ việc ra các nút liên quan, một rồi hai bước.',
+    'Mỗi nút được kiểm quyền theo bản ghi gốc. Thứ agent không được xem thì bỏ qua.',
+    'Gói ngữ cảnh: 5 nguồn, mỗi nguồn ghi rõ vì sao được chọn.',
+    'Agent bắt đầu ngay: đề xuất kế hoạch có trích nguồn, chờ người duyệt.']}
+];
+
+var vp=document.getElementById('vp'),stage=document.getElementById('stage');
+var K=1;function fit(){K=Math.min((vp.clientWidth-24)/1600,(vp.clientHeight-16)/900);stage.style.setProperty('--k',K);}
+window.addEventListener('resize',fit);fit();
+
+var cur=0,beat=0,timer=null,playing=!RM;
+var narr=document.getElementById('narr'),nNo=document.getElementById('narrNo'),nTx=document.getElementById('narrTx'),nSeg=document.getElementById('narrSeg');
+function applyBeat(sl,b){
+  [].slice.call(sl.querySelectorAll('[data-st]')).forEach(function(el){
+    el.dataset.st.split(/\s+/).forEach(function(tok){var k=+tok.split(':')[0],c=tok.split(':')[1];el.classList.toggle(c,b>=k);});
+    if(el.dataset.txt){var t=el.dataset.txt.split(':');el.textContent=b>=+t[0]?t.slice(1).join(':'):el.dataset.base;}
+  });
+}
+function render(){
+  var pg=PAGES[cur],sl=document.getElementById(pg.id),n=pg.beats.length;
+  applyBeat(sl,beat);
+  narr.hidden=!n;
+  if(n){
+    nNo.textContent='BƯỚC '+Math.max(1,beat)+' / '+n;
+    nTx.classList.add('fade');setTimeout(function(){nTx.textContent=beat?pg.beats[beat-1]:pg.beats[0];nTx.classList.remove('fade');},180);
+    nSeg.innerHTML='';for(var i=1;i<=n;i++){var s=document.createElement('i');if(i<=beat)s.className='on';nSeg.appendChild(s);}
+  }
+  if(pg.id==='s-cap'&&beat>0&&beat<=5){var d=document.getElementById('pipedot');d.classList.remove('go');void d.offsetWidth;d.classList.add('go');}
+  document.getElementById('rvPlay').textContent=playing?'❚❚ Dừng':'▶ Phát';
+}
+function schedule(){clearTimeout(timer);var n=PAGES[cur].beats.length;if(!playing||beat>=n)return;timer=setTimeout(function(){beat++;render();schedule();},beat===0?700:3600);}
+function setBeat(b){var n=PAGES[cur].beats.length;beat=Math.max(0,Math.min(n,b));render();schedule();}
+
+var dots=document.getElementById('dots'),count=document.getElementById('count'),prev=document.getElementById('prev'),next=document.getElementById('next');
+PAGES.forEach(function(p,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Trang '+(i+1));b.addEventListener('click',function(){go(i);});dots.appendChild(b);});
+function go(i){
+  cur=Math.max(0,Math.min(PAGES.length-1,i));
+  PAGES.forEach(function(p,j){var s=document.getElementById(p.id);s.classList.toggle('on',j===cur);s.setAttribute('aria-hidden',j===cur?'false':'true');});
+  [].slice.call(dots.children).forEach(function(b,j){b.className=j===cur?'cur':'';});
+  count.textContent=String(cur+1).padStart(2,'0')+' / '+String(PAGES.length).padStart(2,'0');
+  prev.setAttribute('aria-disabled',cur===0?'true':'false');next.setAttribute('aria-disabled',cur===PAGES.length-1?'true':'false');
+  document.getElementById('topline').style.setProperty('--p',((cur+1)/PAGES.length*100)+'%');
+  document.getElementById('rvMsg').textContent='Trang '+(cur+1)+' · '+PAGES[cur].msg;
+  document.getElementById('rvReal').textContent='Trạng thái thật: '+PAGES[cur].real;
+  try{history.replaceState(null,'','#s'+(cur+1));}catch(e){}
+  setBeat(RM?PAGES[cur].beats.length:0);
+}
+prev.addEventListener('click',function(){go(cur-1);});next.addEventListener('click',function(){go(cur+1);});
+document.getElementById('rvPlay').addEventListener('click',function(){playing=!playing;if(playing&&beat>=PAGES[cur].beats.length)beat=0;render();schedule();});
+document.getElementById('rvReplay').addEventListener('click',function(){playing=true;setBeat(0);});
+document.getElementById('rvBack').addEventListener('click',function(){playing=false;setBeat(beat-1);});
+document.getElementById('rvNext').addEventListener('click',function(){playing=false;setBeat(beat+1);});
+document.addEventListener('keydown',function(e){
+  var onBtn=e.target.closest&&e.target.closest('button');
+  if(e.key==='ArrowRight'||e.key==='PageDown'||((e.key===' '||e.key==='Enter')&&!onBtn)){e.preventDefault();go(cur+1);}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1);}
+  else if(e.key==='ArrowDown'){e.preventDefault();playing=false;setBeat(beat+1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();playing=false;setBeat(beat-1);}
+});
+var start=parseInt((location.hash.match(/^#s(\d+)$/)||[])[1],10);
+go(isNaN(start)?0:start-1);
+})();
+</script>
