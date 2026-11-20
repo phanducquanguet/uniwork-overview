@@ -8,7 +8,7 @@
 :root{
   --bg:#03080D; --frame:#061119; --fg:#E8F3F6; --mu:#8FA3B0; --fa:#5B6F7C;
   --line:rgba(94,234,212,.16); --line2:rgba(148,163,184,.15);
-  --teal:#5EEAD4; --cyan:#67E8F9; --violet:#A78BFA; --gold:#E8B86B; --blue:#60A5FA; --green:#4ADE80;
+  --teal:#5EEAD4; --cyan:#67E8F9; --violet:#A78BFA; --gold:#E8B86B; --blue:#60A5FA; --green:#4ADE80; --pink:#F472B6; --red:#FF6B6B;
   --f-d:"Be Vietnam Pro",system-ui,"Segoe UI",sans-serif; --f-m:"JetBrains Mono",ui-monospace,Menlo,monospace;
   color-scheme:dark;
 }
@@ -30,12 +30,16 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-d);overfl
 .ff .r b{color:var(--teal);font-weight:600}
 
 /* slides */
-.slide{position:absolute;left:0;right:0;top:62px;bottom:50px;opacity:0;visibility:hidden;transform:scale(.985);transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.2,1),visibility 0s .7s}
+.slide{position:absolute;left:0;right:0;top:62px;bottom:50px;opacity:0;visibility:hidden;transform:translateX(48px);transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.2,1),visibility 0s .7s}
 .slide.on{opacity:1;visibility:visible;transform:none;transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.2,1),visibility 0s}
+.slide.past{transform:translateX(-48px)}
+.slide:not(.on),.slide:not(.on) *{animation-play-state:paused!important}
 .b{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
 .slide.on .b{opacity:1;transform:none;transition-delay:var(--d,0s)}
 .grid-bg{background-image:linear-gradient(rgba(94,234,212,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(94,234,212,.045) 1px,transparent 1px);background-size:44px 44px}
-.ttl{font-weight:900;text-transform:uppercase;letter-spacing:-.02em;margin:0;line-height:1.04}
+.ttl{font-weight:900;text-transform:uppercase;letter-spacing:-.02em;margin:0;line-height:1.04;text-wrap:balance}
+.ttl .ink{background:linear-gradient(90deg,#7FF5E3,#5EEAD4 40%,#67E8F9);-webkit-background-clip:text;background-clip:text;color:transparent}
+p,.cd span,.why span,.prin span,.ev b,.pi span,.card p{text-wrap:pretty}
 .eyebrow{font-family:var(--f-m);font-size:13.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:12px}
 .eyebrow.dot::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px var(--teal)}
 .eyebrow.dash::before{content:"";width:26px;height:1px;background:var(--teal)}
@@ -52,7 +56,9 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-d);overfl
 .hero .lead{margin-top:36px;font-size:19px;font-weight:600;color:#A9BEC6;letter-spacing:.01em}
 .hero .lead b{color:#E6F4F6}
 .nums{display:flex;gap:14px;margin-top:40px}
-.nums div{width:196px;height:72px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(148,163,184,.22);border-top-color:rgba(94,234,212,.6);background:rgba(5,15,22,.35);padding:12px 16px;display:grid;gap:4px}
+.nums button{all:unset;cursor:pointer;width:196px;height:72px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(148,163,184,.22);border-top-color:rgba(94,234,212,.6);background:rgba(5,15,22,.35);padding:12px 16px;display:grid;gap:4px;align-content:center;transition:border-color .25s,background .25s,transform .25s}
+.nums button:hover{border-color:rgba(94,234,212,.6);background:rgba(94,234,212,.07);transform:translateY(-2px)}
+.nums button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .nums b{font-size:20px;font-weight:800;color:var(--teal);font-family:var(--f-d)}
 .nums span{font-size:12px;letter-spacing:.12em;color:var(--mu);text-transform:uppercase}
 .tags{display:flex;gap:10px;margin-top:36px;flex-wrap:wrap}
@@ -92,7 +98,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-d);overfl
 .ah{position:absolute;left:64px;top:26px;width:1200px}
 .ah h2{font-size:42px;margin-top:10px}
 .ah .lead{margin-top:8px;font-size:16.5px}
-.pageno{position:absolute;right:64px;top:22px;font-family:var(--f-m);font-weight:600;font-size:78px;color:rgba(148,163,184,.14);letter-spacing:-.04em}
+.pageno{position:absolute;right:64px;top:22px;font-family:var(--f-m);font-weight:600;font-size:78px;line-height:1;color:rgba(148,163,184,.14);letter-spacing:-.04em}
 .rows{position:absolute;left:56px;right:56px;top:150px;display:grid;gap:12px}
 .lrow{position:relative;display:grid;grid-template-columns:236px 1fr;gap:18px;padding:10px 18px 12px 10px;border-radius:16px;border:1px solid var(--line2);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 7%,transparent),rgba(255,255,255,.02) 30%);box-sizing:border-box;overflow:hidden}
 .lrow::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,color-mix(in srgb,var(--c) 10%,transparent) 50%,transparent 70%);transform:translateX(-100%);pointer-events:none}
@@ -135,7 +141,9 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-d);overfl
 .why b{font-size:17px;font-weight:700}
 .why span{font-size:13.5px;color:var(--mu);line-height:1.45}
 .prin{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1}
-.prin div{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);padding:20px;display:grid;gap:10px;align-content:start}
+.prin div{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);padding:20px;display:flex;flex-direction:column;gap:10px}
+.prin .tg{margin:auto 0 0;display:flex;gap:6px;flex-wrap:wrap;position:relative;z-index:1}
+.prin .tg i{font-style:normal;font-family:var(--f-m);font-size:11.5px;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--c) 7%,transparent);border-radius:6px;padding:3px 8px}
 .prin div::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 24%,transparent),transparent)}
 .slide.on .prin div::after{animation:glow 6s ease-in-out infinite;animation-delay:var(--fd,0s)}
 @keyframes glow{50%{transform:translate(-30px,20px) scale(1.2);opacity:.6}}
@@ -183,12 +191,13 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
 .gn.agent .ti{background:linear-gradient(135deg,#4D8DFF,#5AF0FF);color:#061026}
 .gn.dim{opacity:.35}
 .gn.lit{border-color:var(--c);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 18%,transparent),0 0 30px -4px color-mix(in srgb,var(--c) 70%,transparent);transition-delay:var(--dl,0s)}
-.gn.dim.lit,.gn.dim.denied{opacity:1}.gn.dim.denied{opacity:.6}
+.gn.dim.lit,.gn.dim.denied{opacity:1}
 .e.dim.hl{opacity:1}.e.dim.broken{opacity:.85}.el.dim.hl{opacity:1}
 .gn.hl{border-color:var(--teal);box-shadow:0 0 0 4px rgba(94,234,212,.2),0 0 34px -4px rgba(94,234,212,.8)}
-.gn.gone{opacity:.3;filter:grayscale(1);transform:translate(-50%,-50%) translateY(190px) scale(.9)}
+.gn.gone{opacity:.45;filter:grayscale(1);transform:translate(-50%,-50%) translateY(190px) scale(.9)}
 .gn.left{filter:grayscale(1);opacity:.65}
-.gn.denied{border-color:var(--red);opacity:.55;filter:grayscale(.6)}
+.gn.denied{border-color:rgba(255,107,107,.7)}
+.gn.denied > :not(.bdg){opacity:.45}
 .gn .bdg{position:absolute;right:-8px;top:-10px;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:999px;opacity:0;transform:scale(.6);transition:all .35s}
 .gn .bdg.ok{background:var(--green);color:#052012}
 .gn .bdg.no{background:var(--red);color:#2A0505}
@@ -241,7 +250,14 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
 
 /* ---------- persist ---------- */
 .qa{position:absolute;left:1040px;top:160px;width:496px;height:514px;border-radius:16px;border:1px solid var(--line2);background:rgba(10,29,39,.7);padding:18px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;z-index:2}
-.qa h5{margin:0;font-family:var(--f-m);font-size:12px;letter-spacing:.16em;color:var(--mu)}
+.qa h5{margin:0;font-family:var(--f-m);font-size:12px;letter-spacing:.16em;color:var(--mu);display:flex;justify-content:space-between;align-items:center}
+.hist{margin-top:auto;border-radius:14px;border:1px solid var(--line2);background:rgba(255,255,255,.03);padding:14px;display:grid;gap:10px}
+.hist .hh{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-m);font-size:11px;letter-spacing:.12em;color:var(--mu)}
+.hist .hr{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;font-size:14px}
+.hist .av{width:30px;height:30px;border-radius:50%;background:var(--pink);color:#200716;display:grid;place-items:center;font-weight:800;font-size:11px}
+.hist time{font-family:var(--f-m);font-size:12.5px;color:#CFE3E8}
+.hist em{grid-column:2/-1;margin-top:-8px;font-style:normal;font-size:12px;color:var(--fa)}
+.hist .hr.old{opacity:.7}
 .ask{display:flex;gap:12px;align-items:flex-start}
 .ask .av{width:34px;height:34px;border-radius:50%;background:var(--green);color:#052012;display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
 .ask p{margin:0;padding:10px 14px;border-radius:4px 14px 14px 14px;background:#0F2A35;font-size:15.5px;font-weight:600}
@@ -293,6 +309,8 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
 .pager{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:30}
 .pg{all:unset;cursor:pointer;font-size:14px;font-weight:600;color:#CFE3E8;padding:10px 16px;border-radius:12px;background:rgba(10,24,32,.9);border:1px solid rgba(148,163,184,.18);white-space:nowrap}
 .pg:hover{border-color:var(--teal)}
+.pg.fs{display:grid;place-items:center;padding:10px 12px}
+.pg[hidden]{display:none}
 .pg:focus-visible,.dots button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .pg[aria-disabled="true"]{color:var(--fa);cursor:default;border-color:rgba(148,163,184,.08)}
 .dots{display:flex;gap:6px;align-items:center;padding:12px 14px;border-radius:12px;background:rgba(10,24,32,.9);border:1px solid rgba(148,163,184,.18)}
@@ -343,11 +361,11 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
         <div class="brandline b">UNIWORK</div>
         <h1 class="ttl b">Kiến trúc<br>tổng quan</h1>
         <p class="lead b">Work OS thế hệ AI, nơi <b>con người và agent cùng làm chủ công việc</b>: nhiệm vụ, cuộc họp, tài liệu và trao đổi trên một nền tảng thống nhất.</p>
-        <div class="nums b"><div><b>01</b><span>Kênh &amp; mô-đun</span></div><div><b>02</b><span>AI &amp; Agent</span></div><div><b>03</b><span>Nền tảng &amp; dữ liệu</span></div></div>
+        <div class="nums b"><button type="button" data-go="3"><b>01</b><span>Kiến trúc 5 tầng</span></button><button type="button" data-go="5"><b>02</b><span>Work Graph</span></button><button type="button" data-go="9"><b>03</b><span>Agent có ngữ cảnh</span></button></div>
         <div class="tags b"><span>UniWork Web</span><span>UniChat</span><span>uniOffice</span><span>Work Graph</span><span class="hl">Ask UNI</span></div>
       </div>
       <svg class="iso b" id="iso" viewBox="0 0 720 660" aria-label="Minh họa isometric: lõi AI ở trên, mô-đun nghiệp vụ bên trái, hạ tầng cloud bên phải, khối dữ liệu ở giữa nền tảng." role="img"></svg>
-      <div class="bin twk" style="left:900px;top:126px">0110<br>01001</div>
+      <div class="bin twk" style="left:1010px;top:104px">0110<br>01001</div>
       <div class="bin twk" style="left:1370px;top:150px;animation-delay:-1.6s">11010<br>10110</div>
       <div class="badge b" style="left:800px;top:150px;--fd:0s"><i>A</i>Agent AI</div>
       <div class="badge b" style="left:1340px;top:214px;--fd:-1.2s"><i>W</i>Work OS</div>
@@ -361,7 +379,7 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
     <svg class="chapbg" id="chapbg" viewBox="0 0 1600 788" aria-hidden="true"></svg>
     <div class="chap"><div class="glass b"><div>
       <span class="pill">CHƯƠNG 1</span>
-      <h2 class="ttl">Kiến trúc tổng quan nền tảng</h2>
+      <h2 class="ttl">Kiến trúc <span class="ink">tổng quan</span></h2>
       <p class="lead">Một kiến trúc thống nhất từ kênh sử dụng, mô-đun nghiệp vụ, AI &amp; agent đến dữ liệu và hạ tầng.</p>
     </div></div></div>
   </section>
@@ -396,12 +414,12 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
         <div class="lb"><span class="no">03</span><div><b>AI &amp; Agent</b><small>Năng lực AI</small></div></div>
         <div class="rc"><h4>AI làm việc như một thành viên: đề xuất, người duyệt, truy vết được</h4>
           <div class="cards" style="grid-template-columns:repeat(6,1fr)">
-            <div class="cd"><b>Ask UNI</b><span>Hỏi đáp và thao tác theo quyền người hỏi</span></div>
-            <div class="cd"><b>Thư ký cuộc họp</b><span>Ghi biên bản · tách việc cần làm</span></div>
-            <div class="cd"><b>Agent thành viên</b><span>Nhận việc · ghi danh · hoàn tác</span></div>
-            <div class="cd"><b>Đề xuất &amp; duyệt</b><span>AI đề xuất · người bấm Áp dụng</span></div>
-            <div class="cd"><b>AI Gateway</b><span>Một cổng điều phối mọi mô hình</span></div>
-            <div class="cd"><b>MCP Connector</b><span>Mở UniWork cho trợ lý AI bên ngoài</span></div>
+            <div class="cd"><b>Ask UNI</b><span>Hỏi đáp, thao tác theo quyền</span></div>
+            <div class="cd"><b>Thư ký cuộc họp</b><span>Biên bản · việc cần làm</span></div>
+            <div class="cd"><b>Agent thành viên</b><span>Nhận việc · có hoàn tác</span></div>
+            <div class="cd"><b>Đề xuất &amp; duyệt</b><span>AI đề xuất · người duyệt</span></div>
+            <div class="cd"><b>AI Gateway</b><span>Một cổng cho mọi mô hình</span></div>
+            <div class="cd"><b>MCP Connector</b><span>Cho trợ lý AI bên ngoài</span></div>
           </div></div>
       </div>
       <div class="half">
@@ -449,10 +467,10 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
       <div class="top"><span class="chip">ARCHITECTURE PRINCIPLES</span><b>Nguyên tắc kiến trúc</b><span class="cnt">04 NGUYÊN TẮC</span></div>
       <p class="intro">Bốn quyết định thiết kế chi phối toàn bộ nền tảng.</p>
       <div class="prin">
-        <div style="--c:var(--teal);--fd:0s"><span class="no">01</span><b>Một nguồn dữ liệu chung</b><span>Công việc, cuộc họp, tài liệu và trò chuyện dùng chung dữ liệu và phân quyền.</span></div>
-        <div style="--c:var(--violet);--fd:-1.5s"><span class="no">02</span><b>Thời gian thực trên mọi thiết bị</b><span>Thay đổi đến web, desktop và mobile ngay khi xảy ra.</span></div>
-        <div style="--c:var(--gold);--fd:-3s"><span class="no">03</span><b>Một cổng cho mọi mô hình AI</b><span>AI Gateway điều phối mọi lời gọi mô hình; không lưu khóa AI của người dùng.</span></div>
-        <div style="--c:var(--blue);--fd:-4.5s"><span class="no">04</span><b>Mỗi quy tắc là một bài kiểm thử</b><span>Ranh giới kiến trúc, bảo mật và dữ liệu đều được kiểm tự động trước khi phát hành.</span></div>
+        <div style="--c:var(--teal);--fd:0s"><span class="no">01</span><b>Một nguồn dữ liệu chung</b><span>Công việc, cuộc họp, tài liệu và trò chuyện dùng chung dữ liệu và phân quyền.</span><p class="tg"><i>Một bản ghi gốc</i><i>Một hệ phân quyền</i></p></div>
+        <div style="--c:var(--violet);--fd:-1.5s"><span class="no">02</span><b>Thời gian thực trên mọi thiết bị</b><span>Thay đổi đến web, desktop và mobile ngay khi xảy ra.</span><p class="tg"><i>WebSocket</i><i>Redis relay</i></p></div>
+        <div style="--c:var(--gold);--fd:-3s"><span class="no">03</span><b>Một cổng cho mọi mô hình AI</b><span>AI Gateway điều phối mọi lời gọi mô hình; không lưu khóa AI của người dùng.</span><p class="tg"><i>AI Gateway</i><i>Không lưu khóa AI</i></p></div>
+        <div style="--c:var(--blue);--fd:-4.5s"><span class="no">04</span><b>Mỗi quy tắc là một bài kiểm thử</b><span>Ranh giới kiến trúc, bảo mật và dữ liệu đều được kiểm tự động trước khi phát hành.</span><p class="tg"><i>Test kiến trúc</i><i>Chặn ở CI</i></p></div>
       </div>
     </div>
   </section>
@@ -462,7 +480,7 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
     <svg class="layer net" id="net" viewBox="0 0 1600 788" aria-hidden="true"></svg>
     <div class="chap"><div class="glass b"><div>
       <span class="pill">CHƯƠNG 2</span>
-      <h2 class="ttl">Work Graph · Bộ nhớ của doanh nghiệp</h2>
+      <h2 class="ttl" style="font-size:52px;max-width:880px"><span class="ink">Work Graph</span><br>Bộ nhớ của doanh nghiệp</h2>
       <p class="lead">Ngữ cảnh công việc được ghi lại mỗi ngày, ở lại với doanh nghiệp, và sẵn sàng cho người mới lẫn agent AI.</p>
     </div></div></div>
   </section>
@@ -510,7 +528,7 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
     <svg class="layer" data-edges></svg>
     <div class="runner" id="runner" data-st="4:run"></div>
     <div class="qa">
-      <h5>HỎI UNI</h5>
+      <h5>HỎI UNI <span class="status road" style="position:static">LỘ TRÌNH</span></h5>
       <div class="ask st" data-st="3:in"><span class="av">LA</span><p>Vì sao có việc "Kiểm tra SEO"? Ai đã quyết?</p></div>
       <div class="ans st" data-st="5:in">
         <div class="hd"><svg viewBox="0 0 128 92"><use href="#uwmark"/></svg>UNI trả lời</div>
@@ -518,7 +536,10 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
         <div class="path">Đường đi: <b>Việc</b> → xuất phát từ → <b>Cuộc họp</b> → thuộc về → <b>Dự án</b> ← thuộc về ← <b>Tài liệu</b></div>
         <div class="cites"><span>Họp demo khách hàng</span><span>Biên bản họp demo</span><span>Hà</span><span>Minh</span></div>
       </div>
-      <span class="status road st" style="position:static;align-self:flex-start;margin-top:auto" data-st="5:in">HỎI UNI TRÊN ĐỒ THỊ · LỘ TRÌNH</span>
+      <div class="hist st" data-st="2:in"><div class="hh"><span>LỊCH SỬ PHỤ TRÁCH · KIỂM TRA SEO</span><span class="status live" style="position:static">ĐANG CHẠY</span></div>
+        <div class="hr old"><span class="av">MI</span><b>Minh</b><time>12/11 → 20/11</time><em>tài khoản ngừng hoạt động, dữ liệu vẫn giữ</em></div>
+        <div class="hr"><span class="av">LA</span><b>Lan</b><time>20/11 → nay</time></div>
+      </div>
     </div>
   </section>
 
@@ -528,7 +549,7 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
     <div class="pageno">09</div>
     <span class="status road">CONTEXT ENGINE · LỘ TRÌNH</span>
     <div class="canvas" style="left:64px;width:724px"><h5>WORK GRAPH · QUANH VIỆC "KIỂM TRA SEO"</h5></div>
-    <svg class="layer" data-edges><circle class="ring" data-st="2:in" cx="420" cy="440" r="165"/><circle class="ring r2" data-st="2:in" cx="420" cy="440" r="290"/></svg>
+    <svg class="layer" data-edges><defs><clipPath id="agclip"><rect x="64" y="160" width="724" height="514" rx="16"/></clipPath></defs><g clip-path="url(#agclip)"><circle class="ring" data-st="2:in" cx="420" cy="452" r="205"/><circle class="ring r2" data-st="2:in" cx="420" cy="452" r="315"/></g></svg>
     <div class="pkg">
       <h5>GÓI NGỮ CẢNH <b class="st" data-st="4:in">5 NGUỒN</b></h5>
       <div class="pi" data-st="4:in" style="--c:var(--teal);--dl:0s"><span class="ti"><svg class="ic"><use href="#g-proj"/></svg></span><div><b>Dự án Ra mắt Q1</b><span>việc thuộc dự án này</span></div></div>
@@ -560,22 +581,23 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
     <svg class="chapbg" id="endbg" viewBox="0 0 1600 788" aria-hidden="true"></svg>
     <div class="chap"><div class="glass b"><div>
       <svg viewBox="0 0 128 92" style="width:84px" aria-hidden="true"><use href="#uwmark"/></svg>
-      <h2 class="ttl" style="font-size:50px;white-space:nowrap">Một nền tảng · Một dữ liệu</h2>
+      <h2 class="ttl" style="font-size:50px;white-space:nowrap">Một nền tảng · <span class="ink">Một dữ liệu</span></h2>
       <p class="lead">Con người và agent cùng làm chủ công việc.</p>
     </div></div></div>
   </section>
 
-  <div class="narr" id="narr" hidden><span class="no" id="narrNo"></span><span class="tx" id="narrTx"></span><span class="seg" id="narrSeg"></span></div>
+  <div class="narr" id="narr" hidden><span class="no" id="narrNo"></span><span class="tx" id="narrTx" aria-live="polite"></span><span class="seg" id="narrSeg"></span></div>
   <footer class="ff"><span id="chap">• UNIWORK · HỒ SƠ KIẾN TRÚC</span><span class="r"><b>UW</b>UNIWORK | HỒ SƠ KIẾN TRÚC</span></footer>
 </div>
 </div>
 </div>
 
 <nav class="pager" aria-label="Chuyển trang">
-  <button class="pg" id="prev" type="button">← <span>Trước</span></button>
+  <button class="pg" id="prev" type="button" title="Trang trước (←)">← <span>Trước</span></button>
   <div class="dots" id="dots"></div>
   <span class="count" id="count"></span>
-  <button class="pg" id="next" type="button"><span>Tiếp</span> →</button>
+  <button class="pg" id="next" type="button" title="Trang sau (→)"><span>Tiếp</span> →</button>
+  <button class="pg fs" id="fs" type="button" aria-label="Toàn màn hình" title="Toàn màn hình (F)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
 </nav>
 <div class="rotate" aria-hidden="true">Xoay ngang màn hình để xem rõ hơn</div>
 
@@ -641,7 +663,6 @@ function label(g,x,y,txt){var t=el('text',{x:x,y:y,'text-anchor':'middle',fill:'
   label(s,360,118,'AI & AGENT');
   // particles
   [[90,250,2.5,0],[640,300,2,-1],[560,210,1.8,-2],[150,600,2,-.5],[620,610,2.4,-1.5]].forEach(function(p){el('circle',{cx:p[0],cy:p[1],r:p[2],fill:'#67E8F9',class:'twk',style:'animation-delay:'+p[3]+'s'},s);});
-  el('polygon',{points:'140,96 156,92 150,104',fill:'#5EEAD4',class:'twk'},s);
 })();
 
 /* chapter backgrounds: wireframe isometric plates */
@@ -676,10 +697,10 @@ var GRAPHS={
     ['T','task','Kiểm tra SEO',520,500,'0:in 4:hl'],['D','doc','Biên bản họp demo',860,470,'0:in 4:hl'],['C','chat','#seo',760,630,'0:in']],
    edges:[['M','P','thuộc về','0:in 4:hl'],['HA','M','tham dự','0:in 4:hl'],['MI','M','tham dự','0:in 4:hl'],['T','M','xuất phát từ','0:in 4:hl'],['T','MI','phụ trách','0:in 2:past','2:phụ trách đến 20/11'],['T','LA','phụ trách từ 20/11','2:in'],['T','P','thuộc về','0:in'],['D','P','thuộc về','0:in 4:hl'],['T','C','được bàn trong','0:in']]},
   's-agt':{nodes:[
-    ['T','task','Kiểm tra SEO',420,440,'0:in 1:hl'],['AG','agent','Agent SEO',420,214,'1:in'],
-    ['M','meet','Họp demo',220,350,'0:in 0:dim 2:lit'],['P','proj','Ra mắt Q1',612,330,'0:in 0:dim 2:lit'],['C','chat','#seo',420,606,'0:in 0:dim 2:lit'],
-    ['HA','person','Hà',130,220,'0:in 0:dim 2:lit'],['MI','person','Minh',130,520,'0:in 0:dim 2:lit'],
-    ['D','doc','Biên bản họp demo',640,196,'0:in 0:dim 2:lit 3:okd'],['K','lock','Hợp đồng khách A',640,620,'0:in 0:dim 3:denied']],
+    ['T','task','Kiểm tra SEO',420,452,'0:in 1:hl'],['AG','agent','Agent SEO',420,254,'1:in'],
+    ['M','meet','Họp demo',220,362,'0:in 0:dim 2:lit'],['P','proj','Ra mắt Q1',614,352,'0:in 0:dim 2:lit'],['C','chat','#seo',420,612,'0:in 0:dim 2:lit'],
+    ['HA','person','Hà',140,246,'0:in 0:dim 2:lit'],['MI','person','Minh',140,546,'0:in 0:dim 2:lit'],
+    ['D','doc','Biên bản họp demo',636,242,'0:in 0:dim 2:lit 3:okd'],['K','lock','Hợp đồng khách A',630,612,'0:in 0:dim 3:denied']],
    edges:[['T','AG','phụ trách','1:in'],['T','M','xuất phát từ','0:in 0:dim 2:hl'],['T','P','thuộc về','0:in 0:dim 2:hl'],['T','C','được bàn trong','0:in 0:dim 2:hl'],['HA','M','tham dự','0:in 0:dim 2:hl'],['MI','M','tham dự','0:in 0:dim 2:hl'],['D','P','thuộc về','0:in 0:dim 2:hl'],['K','P','thuộc về','0:in 0:dim 3:broken']]}
 };
 var HOP2={'s-agt':{HA:.7,MI:.7,D:.7,K:.7}};
@@ -710,8 +731,8 @@ var posPer=buildGraph('s-cap');posPer=buildGraph('s-per');buildGraph('s-agt');
   r.style.offsetPath="path('M"+p.T.join(' ')+" L"+p.M.join(' ')+" L"+p.P.join(' ')+" L"+p.D.join(' ')+"')";})();
 
 /* problem page: lines that live only in Minh's head */
-(function(){
-  var sl=document.getElementById('s-prob'),svg=sl.querySelector('svg[data-edges]');
+function drawProb(){
+  var sl=document.getElementById('s-prob'),svg=sl.querySelector('svg[data-edges]');svg.innerHTML='';
   var minh=[800,400];
   ['p-c1','p-c2','p-m1','p-m2','p-d1','p-t1'].forEach(function(id,i){
     var it=document.getElementById(id),silo=it.parentElement;
@@ -719,7 +740,9 @@ var posPer=buildGraph('s-cap');posPer=buildGraph('s-per');buildGraph('s-agt');
     var p=document.createElementNS(NS,'path');p.setAttribute('d','M'+x+' '+y+' Q'+((x+minh[0])/2)+' '+(y+(minh[1]-y)*.2)+' '+minh[0]+' '+minh[1]);
     p.setAttribute('class','e');p.style.stroke='#F472B6';p.dataset.st='2:in 3:broken 4:off';svg.appendChild(p);p.style.setProperty('--l',Math.ceil(p.getTotalLength()));
   });
-})();
+  if(typeof cur==='number'&&slides&&slides[cur]&&slides[cur].id==='s-prob')applyBeat(sl,beat);
+}
+drawProb();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawProb);
 
 /* chapter page: a graph slowly forming behind the title */
 (function(){
@@ -771,7 +794,7 @@ slides.forEach(function(s,i){var b=document.createElement('button');b.type='butt
 var db=[].slice.call(dots.children);
 function go(n){
   n=Math.max(0,Math.min(slides.length-1,n));cur=n;
-  slides.forEach(function(s,i){s.classList.toggle('on',i===n);s.setAttribute('aria-hidden',i===n?'false':'true');});
+  slides.forEach(function(s,i){s.classList.toggle('on',i===n);s.classList.toggle('past',i<n);s.setAttribute('aria-hidden',i===n?'false':'true');});
   db.forEach(function(b,i){b.className=i===n?'cur':'';if(i===n)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
   count.innerHTML=String(n+1).padStart(2,'0')+' <b>/</b> '+String(slides.length).padStart(2,'0');
   chap.textContent='• '+slides[n].dataset.chap;
@@ -781,6 +804,10 @@ function go(n){
   startBeats();
 }
 prev.addEventListener('click',function(){go(cur-1);});
+[].slice.call(document.querySelectorAll('[data-go]')).forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();go(+b.dataset.go-1);});});
+var fsb=document.getElementById('fs');
+function toggleFS(){try{if(document.fullscreenElement){document.exitFullscreen();}else{var r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(function(){});}}catch(e){}}
+if(!document.fullscreenEnabled)fsb.hidden=true;fsb.addEventListener('click',toggleFS);
 next.addEventListener('click',function(){go(cur+1);});
 document.addEventListener('keydown',function(e){
   var onBtn=e.target.closest&&e.target.closest('button');
@@ -788,6 +815,7 @@ document.addEventListener('keydown',function(e){
   else if(['ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();go(cur-1);}
   else if(e.key==='ArrowDown'){e.preventDefault();autoplay=false;setBeat(beat+1);}
   else if(e.key==='ArrowUp'){e.preventDefault();autoplay=false;setBeat(beat-1);}
+  else if(e.key==='f'||e.key==='F'){toggleFS();}
   else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
 });
 var sx=null;vp.addEventListener('pointerdown',function(e){sx=e.clientX;});
