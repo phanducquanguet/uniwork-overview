@@ -154,14 +154,22 @@ p,.cd span,.why span,.prin span,.ev b,.pi span,.card p{text-wrap:pretty}
 .status.live{color:var(--green);border:1px solid rgba(74,222,128,.45);background:rgba(74,222,128,.07)}
 .status.road{color:var(--gold);border:1px solid rgba(232,184,107,.5);background:rgba(232,184,107,.08)}
 /* narration bar */
-.narr{position:absolute;left:64px;right:64px;bottom:62px;height:52px;display:flex;align-items:center;gap:18px;padding:0 20px;border-radius:14px;border:1px solid var(--line);background:rgba(8,26,34,.85);z-index:6}
+.narr{position:absolute;left:64px;right:64px;bottom:62px;height:52px;display:flex;align-items:center;gap:14px;padding:0 8px;border-radius:14px;border:1px solid var(--line);background:rgba(8,26,34,.85);z-index:6}
 .narr[hidden]{display:none}
 .narr .no{font-family:var(--f-m);font-size:14px;letter-spacing:.14em;color:var(--teal);white-space:nowrap}
 .narr .tx{flex:1;font-size:18px;font-weight:600;transition:opacity .25s}
 .narr .tx.fade{opacity:0}
-.narr .seg{display:flex;gap:6px}
-.narr .seg i{width:22px;height:4px;border-radius:2px;background:rgba(148,163,184,.25);transition:background .3s}
-.narr .seg i.on{background:var(--teal)}
+.narr .seg{display:flex;gap:2px}
+.narr .seg button{all:unset;cursor:pointer;width:28px;height:28px;display:grid;place-items:center;border-radius:6px}
+.narr .seg button::before{content:"";width:22px;height:4px;border-radius:2px;background:rgba(148,163,184,.3);transition:background .3s,height .2s}
+.narr .seg button.on::before{background:var(--teal)}
+.narr .seg button.cur::before{height:6px;box-shadow:0 0 8px rgba(94,234,212,.7)}
+.narr .seg button:hover::before{background:rgba(94,234,212,.6)}
+.narr .seg button:focus-visible{outline:2px solid var(--teal)}
+.nb2{all:unset;cursor:pointer;height:36px;min-width:36px;padding:0 10px;box-sizing:border-box;border-radius:10px;display:grid;place-items:center;color:#DCEBEF;background:rgba(255,255,255,.04);border:1px solid var(--line2);font-size:14px;font-weight:600;white-space:nowrap}
+.nb2:hover{border-color:var(--teal)}
+.nb2:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.nb2.play[aria-pressed="true"]{background:rgba(94,234,212,.12);border-color:rgba(94,234,212,.6);color:var(--teal)}
 
 /* graph primitives */
 svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visible;z-index:1;pointer-events:none}
@@ -597,17 +605,17 @@ body.fs:not(.awake){cursor:none}
     </div></div></div>
   </section>
 
-  <div class="narr" id="narr" hidden><span class="no" id="narrNo"></span><span class="tx" id="narrTx" aria-live="polite"></span><span class="seg" id="narrSeg"></span></div>
+  <div class="narr" id="narr" hidden><button class="nb2" id="bPrev" type="button" aria-label="Bước trước" title="Bước trước (←)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><span class="no" id="narrNo"></span><span class="tx" id="narrTx" aria-live="polite"></span><span class="seg" id="narrSeg" role="group" aria-label="Các bước"></span><button class="nb2" id="bNext" type="button" aria-label="Bước tiếp" title="Bước tiếp (→)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button><button class="nb2 play" id="bPlay" type="button" aria-pressed="false" title="Tự chạy các bước còn lại">▶ Tự chạy</button></div>
   <footer class="ff"><span id="chap">• UNIWORK · HỒ SƠ KIẾN TRÚC</span><span class="r"><b>UW</b>UNIWORK | HỒ SƠ KIẾN TRÚC</span></footer>
 </div>
 </div>
 </div>
 
 <nav class="pager" aria-label="Chuyển trang">
-  <button class="pg" id="prev" type="button" title="Trang trước (←)">← <span>Trước</span></button>
+  <button class="pg" id="prev" type="button" title="Lùi (←): bước trước, hoặc trang trước">← <span>Trước</span></button>
   <div class="dots" id="dots"></div>
   <span class="count" id="count"></span>
-  <button class="pg" id="next" type="button" title="Trang sau (→)"><span>Tiếp</span> →</button>
+  <button class="pg" id="next" type="button" title="Tiếp (→, Space, nhấp vào trang): bước tiếp, hết bước thì sang trang"><span>Tiếp</span> →</button>
   <button class="pg fs" id="fs" type="button" aria-label="Toàn màn hình" title="Toàn màn hình (F)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
 </nav>
 <div class="rotate" aria-hidden="true">Xoay ngang màn hình để xem rõ hơn</div>
@@ -816,7 +824,7 @@ slides.forEach(function(s){[].slice.call(s.querySelectorAll('.b')).forEach(funct
 var cur=0,dots=document.getElementById('dots'),count=document.getElementById('count'),chap=document.getElementById('chap'),prev=document.getElementById('prev'),next=document.getElementById('next'),top=document.getElementById('topline');
 slides.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Trang '+(i+1));b.addEventListener('click',function(){go(i);});dots.appendChild(b);});
 var db=[].slice.call(dots.children);
-function go(n){
+function go(n,atEnd){
   n=Math.max(0,Math.min(slides.length-1,n));cur=n;
   slides.forEach(function(s,i){s.classList.toggle('on',i===n);s.classList.toggle('past',i<n);s.setAttribute('aria-hidden',i===n?'false':'true');});
   db.forEach(function(b,i){b.className=i===n?'cur':'';if(i===n)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
@@ -825,9 +833,9 @@ function go(n){
   prev.setAttribute('aria-disabled',n===0?'true':'false');next.setAttribute('aria-disabled',n===slides.length-1?'true':'false');
   top.style.setProperty('--p',((n+1)/slides.length*100)+'%');
   try{history.replaceState(null,'','#s'+(n+1));}catch(e){}
-  startBeats();
+  startBeats(atEnd);
 }
-prev.addEventListener('click',function(){go(cur-1);});
+prev.addEventListener('click',function(){stepPrev();});
 [].slice.call(document.querySelectorAll('[data-go]')).forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();go(+b.dataset.go-1);});});
 var fsb=document.getElementById('fs');
 function toggleFS(){try{if(document.fullscreenElement){document.exitFullscreen();}else{var r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(function(){});}}catch(e){}}
@@ -835,21 +843,24 @@ if(!document.fullscreenEnabled)fsb.hidden=true;fsb.addEventListener('click',togg
 var idle=null;function wake(){document.body.classList.add('awake');clearTimeout(idle);idle=setTimeout(function(){document.body.classList.remove('awake');},2500);}
 document.addEventListener('fullscreenchange',function(){document.body.classList.toggle('fs',!!document.fullscreenElement);wake();setTimeout(fit,50);});
 document.addEventListener('pointermove',wake);
-next.addEventListener('click',function(){go(cur+1);});
+next.addEventListener('click',function(){stepNext();});
 document.addEventListener('keydown',function(e){
   var onBtn=e.target.closest&&e.target.closest('button');
-  if(['ArrowRight','PageDown'].indexOf(e.key)>-1||((e.key===' '||e.key==='Enter')&&!onBtn)){e.preventDefault();go(cur+1);}
-  else if(['ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();go(cur-1);}
-  else if(e.key==='ArrowDown'){e.preventDefault();autoplay=false;setBeat(beat+1);}
-  else if(e.key==='ArrowUp'){e.preventDefault();autoplay=false;setBeat(beat-1);}
+  if(['ArrowRight','PageDown'].indexOf(e.key)>-1||((e.key===' '||e.key==='Enter')&&!onBtn)){e.preventDefault();stepNext();}
+  else if(['ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();stepPrev();}
+  else if(e.key==='ArrowDown'){e.preventDefault();setAuto(false);setBeat(beat+1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();setAuto(false);setBeat(Math.max(1,beat-1));}
   else if(e.key==='f'||e.key==='F'){toggleFS();}
   else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
 });
-var sx=null;vp.addEventListener('pointerdown',function(e){sx=e.clientX;});
-vp.addEventListener('pointerup',function(e){if(sx===null)return;var dx=e.clientX-sx;sx=null;if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));});
+/* a click on the page is the presenter's clicker: the next step, then the next page; a swipe goes either way */
+var sx=null,sy=null;vp.addEventListener('pointerdown',function(e){sx=e.clientX;sy=e.clientY;});
+vp.addEventListener('pointerup',function(e){if(sx===null)return;var dx=e.clientX-sx,dy=e.clientY-sy;sx=sy=null;
+  if(Math.abs(dx)>60){dx<0?stepNext():stepPrev();return;}
+  if(Math.abs(dx)<6&&Math.abs(dy)<6&&e.button===0&&!(e.target.closest&&e.target.closest('button,a,input,[role="button"]'))&&!(window.getSelection&&String(window.getSelection()))) stepNext();});
 /* beats: a page with beats plays them once, then holds; up/down steps them */
 var narr=document.getElementById('narr'),nNo=document.getElementById('narrNo'),nTx=document.getElementById('narrTx'),nSeg=document.getElementById('narrSeg');
-var beat=0,btimer=null,autoplay=true;
+var beat=0,btimer=null,autoplay=false,bPlay=document.getElementById('bPlay');
 function beatsOf(){return BEATS[slides[cur].id]||[];}
 function applyBeat(sl,b){
   [].slice.call(sl.querySelectorAll('[data-st]')).forEach(function(el){
@@ -862,12 +873,22 @@ function renderBeat(){
   applyBeat(sl,beat);
   nNo.textContent='BƯỚC '+Math.max(1,beat)+' / '+n;
   nTx.classList.add('fade');setTimeout(function(){nTx.textContent=bs[Math.max(0,beat-1)];nTx.classList.remove('fade');},180);
-  nSeg.innerHTML='';for(var i=1;i<=n;i++){var s=document.createElement('i');if(i<=beat)s.className='on';nSeg.appendChild(s);}
+  nSeg.innerHTML='';
+  for(var i=1;i<=n;i++){(function(i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Bước '+i);
+    b.className=(i<=beat?'on':'')+(i===beat?' cur':'');if(i===beat)b.setAttribute('aria-current','step');
+    b.addEventListener('click',function(){setAuto(false);setBeat(i);});nSeg.appendChild(b);})(i);}
   if(sl.id==='s-cap'&&beat>0&&beat<=5){var d=document.getElementById('pipedot');d.classList.remove('go');void d.offsetWidth;d.classList.add('go');}
 }
-function sched(){clearTimeout(btimer);if(RM||!autoplay||beat>=beatsOf().length)return;btimer=setTimeout(function(){beat++;renderBeat();sched();},beat===0?700:3600);}
+function setAuto(on){autoplay=!!on&&!RM;bPlay.setAttribute('aria-pressed',autoplay?'true':'false');bPlay.textContent=autoplay?'❚❚ Dừng':'▶ Tự chạy';sched();}
+function sched(){clearTimeout(btimer);if(!autoplay)return;if(beat>=beatsOf().length){setAuto(false);return;}btimer=setTimeout(function(){beat++;renderBeat();sched();},3400);}
 function setBeat(b){beat=Math.max(0,Math.min(beatsOf().length,b));renderBeat();sched();}
-function startBeats(){autoplay=true;setBeat(RM?beatsOf().length:0);}
+/* arriving forward shows the first step; arriving backward shows the last, as a presentation does */
+function startBeats(atEnd){var n=beatsOf().length;setAuto(false);setBeat(n?((atEnd||RM)?n:1):0);}
+function stepNext(){var n=beatsOf().length;if(n&&beat<n){setAuto(false);setBeat(beat+1);}else go(cur+1);}
+function stepPrev(){var n=beatsOf().length;if(n&&beat>1){setAuto(false);setBeat(beat-1);}else if(cur>0)go(cur-1,true);}
+document.getElementById('bNext').addEventListener('click',stepNext);
+document.getElementById('bPrev').addEventListener('click',stepPrev);
+bPlay.addEventListener('click',function(){if(!autoplay&&beat>=beatsOf().length)setBeat(1);setAuto(!autoplay);});
 var start=parseInt((location.hash.match(/^#s(\d+)$/)||[])[1],10);
 go(isNaN(start)?0:start-1);
 })();
