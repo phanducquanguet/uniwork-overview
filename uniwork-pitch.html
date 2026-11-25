@@ -65,7 +65,7 @@ p,.cd span,.why span,.prin span,.ev b,.pi span,.card p{text-wrap:pretty}
 .nums b{font-size:20px;font-weight:800;color:var(--teal);font-family:var(--f-d)}
 .nums span{font-size:13px;letter-spacing:.08em;color:var(--mu);text-transform:uppercase}
 .tags{display:flex;gap:10px;margin-top:36px;flex-wrap:wrap}
-.tags span{font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid rgba(148,163,184,.28);color:#B9CBD3;letter-spacing:.02em}
+.tags > span{font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid rgba(148,163,184,.28);color:#B9CBD3;letter-spacing:.02em}
 .tags span.hl{border-color:var(--teal);color:var(--teal);background:rgba(94,234,212,.08)}
 .iso{position:absolute;left:800px;top:70px;width:720px;height:660px;overflow:visible}
 
@@ -304,6 +304,10 @@ svg.layer{position:absolute;left:0;top:0;width:1600px;height:788px;overflow:visi
 .cmp .yes{border-color:rgba(94,234,212,.45);background:rgba(94,234,212,.06)}.cmp .yes b{color:var(--teal)}
 
 
+.mind{display:inline-grid;place-items:center;flex:none;width:var(--ms,22px);height:var(--ms,22px);border-radius:30%;background-image:linear-gradient(135deg,#4D8DFF,#35CBFF 60%,#5AF0FF);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);color:#fff;vertical-align:middle}
+.mind svg,.ans .hd .mind svg{width:calc(var(--ms,22px)*.72);height:calc(var(--ms,22px)*.72);overflow:visible}
+.tags > span.hl{display:inline-flex;align-items:center;gap:8px}
+
 /* ---------- presenting ---------- */
 body.fs .viewport{bottom:0}
 body.fs .pager,body.fs .topline{opacity:0;transition:opacity .4s}
@@ -340,6 +344,7 @@ body.fs:not(.awake){cursor:none}
     <symbol id="i-user" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="3.5"/><path d="M12 4v4M9 13h.01M15 13h.01M9.5 16.5h5"/></symbol>
     <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
     <symbol id="i-org" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="mindmark" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18a4 4 0 01-2-7.465"/><path d="M6.004 5.125a4 4 0 00-2.526 5.77"/><path d="M6.294 6.294A3 3 0 1112 5v13a4 4 0 11-7.967-.518"/><path d="M12 9a4.17 4.17 0 01-3 4"/><path d="M12 13h4"/><path d="M12 18h6a2 2 0 012 2v1"/><path d="M12 8h8"/><path d="M16 8V5a2 2 0 012-2"/></g><g fill="currentColor"><circle cx="16" cy="13" r="1.35"/><circle cx="20" cy="21" r="1.35"/><circle cx="20" cy="8" r="1.35"/><circle cx="18" cy="3" r="1.35"/></g></symbol>
     <symbol id="i-trace" viewBox="0 0 24 24"><path d="M4 19l5-6 4 3 7-9"/><circle cx="20" cy="7" r="1.5"/></symbol>
     <symbol id="g-task" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></symbol>
     <symbol id="g-meet" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10l5-3v10l-5-3"/></symbol>
@@ -367,7 +372,7 @@ body.fs:not(.awake){cursor:none}
         <h1 class="ttl b"><span class="ink">Kiến trúc<br>tổng quan</span></h1>
         <p class="lead b">Nơi <b>con người và agent cùng làm chủ công việc</b>: nhiệm vụ, cuộc họp, tài liệu và trao đổi trên một nền tảng thống nhất.</p>
         <div class="nums b"><button type="button" data-go="3"><b>01</b><span>Kiến trúc 5 tầng</span></button><button type="button" data-go="5"><b>02</b><span>Work Graph</span></button><button type="button" data-go="9"><b>03</b><span>Agent có ngữ cảnh</span></button></div>
-        <div class="tags b"><span>UniWork Web</span><span>UniChat</span><span>uniOffice</span><span>Work Graph</span><span class="hl">Ask UNI</span></div>
+        <div class="tags b"><span>UniWork Web</span><span>UniChat</span><span>uniOffice</span><span>Work Graph</span><span class="hl"><span class="mind" style="--ms:18px"><svg><use href="#mindmark"/></svg></span>UniWork Mind</span></div>
       </div>
       <svg class="iso b" id="iso" viewBox="0 0 720 660" role="img" aria-label="Minh họa nền tảng: AI Core làm việc qua mô-đun nghiệp vụ bằng đề xuất có người duyệt, gọi mô hình trên hạ tầng cloud qua AI Gateway; chỉ mô-đun nghiệp vụ đọc và ghi khối dữ liệu."></svg>
       <div class="badge b" style="left:800px;top:150px"><i><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></i>Bảo mật nhiều lớp</div>
@@ -420,8 +425,8 @@ body.fs:not(.awake){cursor:none}
         <div class="lb"><span class="no">03</span><div><b>AI &amp; Agent</b><small>Năng lực AI</small></div></div>
         <div class="rc"><h4>AI làm việc như một thành viên: đề xuất, người duyệt, truy vết được</h4>
           <div class="cards" style="grid-template-columns:repeat(6,1fr)">
-            <div class="cd"><b>Ask UNI</b><span>Hỏi đáp, thao tác theo quyền</span></div>
-            <div class="cd"><b>Thư ký cuộc họp</b><span>Biên bản · việc cần làm</span></div>
+            <div class="cd"><b>UniWork Mind</b><span>Hỏi đáp, thao tác theo quyền</span></div>
+            <div class="cd"><b>Thư ký Mind</b><span>Biên bản · việc cần làm</span></div>
             <div class="cd"><b>Agent thành viên</b><span>Nhận việc · có hoàn tác</span></div>
             <div class="cd"><b>Đề xuất &amp; duyệt</b><span>AI đề xuất · người duyệt</span></div>
             <div class="cd"><b>AI Gateway</b><span>Một cổng cho mọi mô hình</span></div>
@@ -534,10 +539,10 @@ body.fs:not(.awake){cursor:none}
     <svg class="layer" data-edges></svg>
     <div class="runner" id="runner" data-st="4:run"></div>
     <div class="qa">
-      <h5>HỎI UNI <span class="status road" style="position:static">LỘ TRÌNH</span></h5>
+      <h5>HỎI MIND <span class="status road" style="position:static">LỘ TRÌNH</span></h5>
       <div class="ask st" data-st="3:in"><span class="av">LA</span><p>Vì sao có việc "Kiểm tra SEO"? Ai đã quyết?</p></div>
       <div class="ans st" data-st="5:in">
-        <div class="hd"><svg viewBox="0 0 128 92"><use href="#uwmark"/></svg>UNI trả lời</div>
+        <div class="hd"><span class="mind"><svg><use href="#mindmark"/></svg></span>Mind trả lời</div>
         <p>Việc được tạo từ <mark>Họp demo khách hàng 12/11</mark>, do Hà tạo và giao Minh. Hà và Minh cùng dự họp. Tài liệu liên quan là <mark>Biên bản họp demo</mark> trong dự án Ra mắt Q1.</p>
         <div class="path">Đường đi: <b>Việc</b> → xuất phát từ → <b>Cuộc họp</b> → thuộc về → <b>Dự án</b> ← thuộc về ← <b>Tài liệu</b></div>
         <div class="cites"><span>Họp demo khách hàng</span><span>Biên bản họp demo</span><span>Hà</span><span>Minh</span></div>
@@ -786,7 +791,7 @@ var PAGES=[
     'Biên bản tải lên dự án: nút Tài liệu nối vào Dự án.',
     'Việc được bàn trong kênh #seo: quan hệ "được bàn trong".',
     'Mỗi quan hệ trỏ về một bản ghi gốc. Không suy đoán, không nhập tay.']},
-  {id:'s-per',msg:'Người rời đi, quan hệ và lịch sử vẫn còn; câu hỏi "vì sao" trả lời bằng đường đi trên đồ thị.',real:'Đang chạy: giữ dữ liệu khi tài khoản ngừng hoạt động, lịch sử người phụ trách, panel Liên quan. Lộ trình: Hỏi UNI trả lời từ đồ thị (Context Engine).',beats:[
+  {id:'s-per',msg:'Người rời đi, quan hệ và lịch sử vẫn còn; câu hỏi "vì sao" trả lời bằng đường đi trên đồ thị.',real:'Đang chạy: giữ dữ liệu khi tài khoản ngừng hoạt động, lịch sử người phụ trách, panel Liên quan. Lộ trình: Mind trả lời từ đồ thị (Context Engine).',beats:[
     'Đồ thị của dự án sau một tháng làm việc.',
     'Minh chuyển công tác: tài khoản ngừng hoạt động, việc chuyển cho Lan, lịch sử phụ trách vẫn giữ.',
     'Lan nhận việc và hỏi: vì sao có việc này, ai đã quyết?',
