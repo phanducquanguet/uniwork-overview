@@ -1,0 +1,13 @@
+{
+  "name": "uniwork-architecture",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UniWork architecture profile: a 10-page bilingual (EN/VI) presentation deck in one HTML file.",
+  "scripts": {
+    "audit": "node tools/audit.cjs",
+    "serve": "python3 -m http.server 8080"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}
