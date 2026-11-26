@@ -1,4 +1,7 @@
-# UniWork Architecture
+# UniWork Overview
+
+Repo `UNIAI-TEAM/uniwork-overview`: nguồn của bộ slide **UniWork Architecture**.
+
 
 Hồ sơ kiến trúc UniWork: bộ slide 10 trang, song ngữ **EN / VI** (mặc định EN), trình bày kiến trúc 5 tầng, nguyên tắc nền tảng và chương Work Graph (giữ tri thức doanh nghiệp, agent vào việc là có ngữ cảnh).
 
